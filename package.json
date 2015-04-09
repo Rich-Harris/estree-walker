@@ -1,7 +1,7 @@
 {
   "name": "estree-walker",
   "description": "Traverse an ESTree-compliant AST",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Rich Harris",
   "license": "MIT",
   "main": "./dist/estree-walker.js",
@@ -17,5 +17,10 @@
     "gobble-cli": "^0.3.5",
     "gobble-esperanto": "^0.2.4",
     "gobble-sorcery": "^0.2.5"
-  }
+  },
+  "files": [
+    "src",
+    "dist",
+    "README.md"
+  ]
 }
