@@ -1,5 +1,9 @@
 # changelog
 
+## 0.1.3
+
+* npm snafu
+
 ## 0.1.2
 
 * Pass current prop and index to `enter`/`leave` callbacks

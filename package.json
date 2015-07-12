@@ -1,7 +1,7 @@
 {
   "name": "estree-walker",
   "description": "Traverse an ESTree-compliant AST",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "Rich Harris",
   "license": "MIT",
   "main": "./dist/estree-walker.js",
