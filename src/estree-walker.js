@@ -14,17 +14,17 @@ function isArray ( thing ) {
 	return toString.call( thing ) === '[object Array]';
 }
 
-function visit ( node, parent, enter, leave ) {
+function visit ( node, parent, enter, leave, prop, index ) {
 	if ( !node ) return;
 
 	if ( enter ) {
 		context.shouldSkip = false;
-		enter.call( context, node, parent );
+		enter.call( context, node, parent, prop, index );
 		if ( context.shouldSkip ) return;
 	}
 
 	const keys = childKeys[ node.type ] || (
-		childKeys[ node.type ] = Object.keys( node ).filter( key => typeof node[ key ] === 'object' )
+		childKeys[ node.type ] = Object.keys( node ).filter( prop => typeof node[ prop ] === 'object' )
 	);
 
 	let key, value, i, j;
@@ -37,16 +37,16 @@ function visit ( node, parent, enter, leave ) {
 		if ( isArray( value ) ) {
 			j = value.length;
 			while ( j-- ) {
-				visit( value[j], node, enter, leave );
+				visit( value[j], node, enter, leave, key, j );
 			}
 		}
 
 		else if ( value && value.type ) {
-			visit( value, node, enter, leave );
+			visit( value, node, enter, leave, key, null );
 		}
 	}
 
 	if ( leave ) {
-		leave( node, parent );
+		leave( node, parent, prop, index );
 	}
 }
