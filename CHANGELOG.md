@@ -1,5 +1,9 @@
 # changelog
 
+## 0.2.0
+
+* Add ES6 build
+
 ## 0.1.3
 
 * npm snafu
