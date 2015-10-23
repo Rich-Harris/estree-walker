@@ -4,18 +4,19 @@
   "version": "0.1.3",
   "author": "Rich Harris",
   "license": "MIT",
-  "main": "./dist/estree-walker.js",
-  "jsnext:main": "./src/estree-walker.js",
+  "main": "dist/estree-walker.umd.js",
+  "jsnext:main": "dist/estree-walker.es6.js",
   "scripts": {
-    "prepublish": "npm run build; npm test",
+    "prepublish": "npm test",
     "build": "gobble build -f dist",
-    "test": "echo 'TODO... add some tests'"
+    "test": "echo 'TODO... add some tests'",
+    "pretest": "npm run build"
   },
   "devDependencies": {
     "gobble": "^0.7.13",
     "gobble-babel": "^5.0.0",
     "gobble-cli": "^0.3.5",
-    "gobble-esperanto": "^0.2.4",
+    "gobble-rollup-babel": "^0.6.1",
     "gobble-sorcery": "^0.2.5"
   },
   "files": [
