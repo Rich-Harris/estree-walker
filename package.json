@@ -7,17 +7,17 @@
   "main": "dist/estree-walker.umd.js",
   "jsnext:main": "dist/estree-walker.es6.js",
   "scripts": {
-    "prepublish": "npm test",
-    "build": "gobble build -f dist",
+    "prepublish": "npm run lint && npm test",
+    "build": "rollup -c -f umd -o dist/estree-walker.umd.js && rollup -c -f es6 -o dist/estree-walker.es6.js",
     "test": "echo 'TODO... add some tests'",
-    "pretest": "npm run build"
+    "pretest": "npm run build",
+    "lint": "eslint src"
   },
   "devDependencies": {
-    "gobble": "^0.7.13",
-    "gobble-babel": "^5.0.0",
-    "gobble-cli": "^0.3.5",
-    "gobble-rollup-babel": "^0.6.1",
-    "gobble-sorcery": "^0.2.5"
+    "babel-preset-es2015-rollup": "^1.0.0",
+    "eslint": "^1.10.3",
+    "rollup": "^0.23.1",
+    "rollup-plugin-babel": "^2.3.4"
   },
   "files": [
     "src",
