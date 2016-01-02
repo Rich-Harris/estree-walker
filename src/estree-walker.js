@@ -14,10 +14,6 @@ function isArray ( thing ) {
 	return toString.call( thing ) === '[object Array]';
 }
 
-function isObject ( thing ) {
-	return toString.call( thing ) === '[object Object]';
-}
-
 function visit ( node, parent, enter, leave, prop, index ) {
 	if ( !node ) return;
 
@@ -28,7 +24,7 @@ function visit ( node, parent, enter, leave, prop, index ) {
 	}
 
 	const keys = childKeys[ node.type ] || (
-		childKeys[ node.type ] = Object.keys( node ).filter( isObject )
+		childKeys[ node.type ] = Object.keys( node ).filter( key => typeof node[ key ] === 'object' )
 	);
 
 	let key, value, i, j;
