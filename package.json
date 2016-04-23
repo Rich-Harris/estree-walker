@@ -15,9 +15,9 @@
   },
   "devDependencies": {
     "buble": "^0.5.6",
-    "eslint": "^1.10.3",
-    "mocha": "^2.3.4",
-    "rollup": "^0.23.1",
+    "eslint": "^2.8.0",
+    "mocha": "^2.4.5",
+    "rollup": "^0.26.0",
     "rollup-plugin-buble": "^0.5.0"
   },
   "files": [
