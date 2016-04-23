@@ -1,13 +1,6 @@
-import { describe, it } from 'mocha';
-import * as assert from 'assert';
-import * as acorn from 'acorn';
-import { walk } from '..';
-
-function parse ( code ) {
-	return acorn.parse( code, {
-		ecmaVersion: 6
-	});
-}
+const { describe, it } = require( 'mocha' );
+const assert = require( 'assert' );
+const { walk } = require( '..' );
 
 describe( 'estree-walker', () => {
 	it( 'walks an AST', () => {

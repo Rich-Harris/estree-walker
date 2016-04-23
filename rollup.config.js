@@ -1,8 +1,8 @@
-import babel from 'rollup-plugin-babel';
+import buble from 'rollup-plugin-buble';
 
 export default {
 	entry: 'src/estree-walker.js',
 	moduleName: 'estreeWalker',
-	plugins: [ babel() ],
+	plugins: [ buble() ],
 	sourceMap: true
 };
