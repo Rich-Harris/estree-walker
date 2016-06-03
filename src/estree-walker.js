@@ -3,7 +3,8 @@ export function walk ( ast, { enter, leave }) {
 }
 
 const context = {
-	skip: () => context.shouldSkip = true
+	skip: () => context.shouldSkip = true,
+	shouldSkip: false
 };
 
 let childKeys = {};

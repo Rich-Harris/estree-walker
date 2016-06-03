@@ -1,5 +1,9 @@
 # changelog
 
+## 0.2.1
+
+* Keep `context` shape
+
 ## 0.2.0
 
 * Add ES6 build
