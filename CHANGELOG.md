@@ -1,5 +1,9 @@
 # changelog
 
+## 0.3.0
+
+* More predictable ordering
+
 ## 0.2.1
 
 * Keep `context` shape
