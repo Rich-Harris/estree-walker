@@ -28,16 +28,12 @@ function visit ( node, parent, enter, leave, prop, index ) {
 		childKeys[ node.type ] = Object.keys( node ).filter( key => typeof node[ key ] === 'object' )
 	);
 
-	let key, value, i, j;
-
-	i = keys.length;
-	while ( i-- ) {
-		key = keys[i];
-		value = node[ key ];
+	for ( let i = 0; i < keys.length; i += 1 ) {
+		const key = keys[i];
+		const value = node[ key ];
 
 		if ( isArray( value ) ) {
-			j = value.length;
-			while ( j-- ) {
+			for ( let j = 0; j < value.length; j += 1 ) {
 				visit( value[j], node, enter, leave, key, j );
 			}
 		}
