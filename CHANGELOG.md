@@ -1,5 +1,9 @@
 # changelog
 
+## 0.3.1
+
+* Include `pkg.repository` ([#2](https://github.com/Rich-Harris/estree-walker/pull/2))
+
 ## 0.3.0
 
 * More predictable ordering
