@@ -4,6 +4,7 @@
   "version": "0.3.1",
   "author": "Rich Harris",
   "license": "MIT",
+  "typings": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/Rich-Harris/estree-walker"
