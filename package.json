@@ -1,7 +1,7 @@
 {
   "name": "estree-walker",
   "description": "Traverse an ESTree-compliant AST",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "author": "Rich Harris",
   "license": "MIT",
   "typings": "index.d.ts",

@@ -1,5 +1,9 @@
 # changelog
 
+## 0.4.0
+
+* Add TypeScript typings ([#3](https://github.com/Rich-Harris/estree-walker/pull/3))
+
 ## 0.3.1
 
 * Include `pkg.repository` ([#2](https://github.com/Rich-Harris/estree-walker/pull/2))
