@@ -1,5 +1,9 @@
 # changelog
 
+## 0.5.0
+
+* Export `childKeys`, for manually fixing in case of malformed ASTs
+
 ## 0.4.0
 
 * Add TypeScript typings ([#3](https://github.com/Rich-Harris/estree-walker/pull/3))
