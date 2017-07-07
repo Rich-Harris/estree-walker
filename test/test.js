@@ -1,8 +1,38 @@
 const { describe, it } = require( 'mocha' );
 const assert = require( 'assert' );
-const { walk } = require( '..' );
+const { walk, childKeys } = require( '..' );
 
 describe( 'estree-walker', () => {
+	it( 'walks a malformed node, if childKeys is populated', () => {
+		// this test must come first, otherwise it doesn't have
+		// an opportunity to present
+		childKeys.Foo = [ 'answer' ];
+
+		const block = [
+			{
+				type: 'Foo',
+				answer: undefined
+			},
+			{
+				type: 'Foo',
+				answer: {
+					type: 'Answer',
+					value: 42
+				}
+			}
+		];
+
+		let answer;
+
+		walk({ type: 'Test', block }, {
+			enter ( node ) {
+				if ( node.type === 'Answer' ) answer = node;
+			}
+		});
+
+		assert.equal(answer, block[1].answer);
+	});
+
 	it( 'walks an AST', () => {
 		const ast = {
 			type: 'Program',

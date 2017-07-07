@@ -7,7 +7,7 @@ const context = {
 	shouldSkip: false
 };
 
-let childKeys = {};
+export const childKeys = {};
 
 const toString = Object.prototype.toString;
 
