@@ -1,14 +1,12 @@
 import buble from 'rollup-plugin-buble';
-
-const pkg = require( './package.json' );
+import pkg from './package.json';
 
 export default {
-	entry: 'src/estree-walker.js',
-	targets: [
-		{ dest: pkg.main, format: 'umd' },
-		{ dest: pkg.module, format: 'es' }
+	input: 'src/estree-walker.js',
+	output: [
+		{ file: pkg.main, format: 'umd', name: 'estreeWalker' },
+		{ file: pkg.module, format: 'es' }
 	],
-	moduleName: 'estreeWalker',
 	plugins: [ buble() ],
-	sourceMap: true
+	sourcemap: true
 };
