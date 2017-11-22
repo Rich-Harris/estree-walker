@@ -2,10 +2,8 @@ export function walk ( ast, { enter, leave }) {
 	visit( ast, null, enter, leave );
 }
 
-const context = {
-	skip: () => context.shouldSkip = true,
-	shouldSkip: false
-};
+let shouldSkip = false;
+const context = { skip: () => shouldSkip = true };
 
 export const childKeys = {};
 
@@ -19,9 +17,13 @@ function visit ( node, parent, enter, leave, prop, index ) {
 	if ( !node ) return;
 
 	if ( enter ) {
-		context.shouldSkip = false;
+		let _shouldSkip = shouldSkip;
+		shouldSkip = false;
 		enter.call( context, node, parent, prop, index );
-		if ( context.shouldSkip ) return;
+		const skipped = shouldSkip;
+		shouldSkip = _shouldSkip;
+
+		if ( skipped ) return;
 	}
 
 	const keys = childKeys[ node.type ] || (

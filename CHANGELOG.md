@@ -1,5 +1,9 @@
 # changelog
 
+## 0.5.1
+
+* Prevent context corruption when `walk()` is called during a walk
+
 ## 0.5.0
 
 * Export `childKeys`, for manually fixing in case of malformed ASTs
