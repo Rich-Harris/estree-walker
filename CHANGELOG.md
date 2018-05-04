@@ -1,5 +1,9 @@
 # changelog
 
+## 0.5.2
+
+* Add types to package
+
 ## 0.5.1
 
 * Prevent context corruption when `walk()` is called during a walk

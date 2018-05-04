@@ -1,7 +1,7 @@
 {
   "name": "estree-walker",
   "description": "Traverse an ESTree-compliant AST",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": "Rich Harris",
   "license": "MIT",
   "typings": "index.d.ts",
@@ -29,6 +29,7 @@
   "files": [
     "src",
     "dist",
+    "index.d.ts",
     "README.md"
   ]
 }
