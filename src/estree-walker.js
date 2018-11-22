@@ -1,5 +1,5 @@
-export function walk ( ast, { enter, leave }) {
-	visit( ast, null, enter, leave );
+export function walk(ast, { enter, leave }) {
+	visit(ast, null, enter, leave);
 }
 
 let shouldSkip = false;
@@ -9,43 +9,43 @@ export const childKeys = {};
 
 const toString = Object.prototype.toString;
 
-function isArray ( thing ) {
-	return toString.call( thing ) === '[object Array]';
+function isArray(thing) {
+	return toString.call(thing) === '[object Array]';
 }
 
-function visit ( node, parent, enter, leave, prop, index ) {
-	if ( !node ) return;
+function visit(node, parent, enter, leave, prop, index) {
+	if (!node) return;
 
-	if ( enter ) {
-		let _shouldSkip = shouldSkip;
+	if (enter) {
+		const _shouldSkip = shouldSkip;
 		shouldSkip = false;
-		enter.call( context, node, parent, prop, index );
+		enter.call(context, node, parent, prop, index);
 		const skipped = shouldSkip;
 		shouldSkip = _shouldSkip;
 
-		if ( skipped ) return;
+		if (skipped) return;
 	}
 
-	const keys = childKeys[ node.type ] || (
-		childKeys[ node.type ] = Object.keys( node ).filter( key => typeof node[ key ] === 'object' )
+	const keys = childKeys[node.type] || (
+		childKeys[node.type] = Object.keys(node).filter(key => typeof node[key] === 'object')
 	);
 
-	for ( let i = 0; i < keys.length; i += 1 ) {
+	for (let i = 0; i < keys.length; i += 1) {
 		const key = keys[i];
-		const value = node[ key ];
+		const value = node[key];
 
-		if ( isArray( value ) ) {
-			for ( let j = 0; j < value.length; j += 1 ) {
-				visit( value[j], node, enter, leave, key, j );
+		if (isArray(value)) {
+			for (let j = 0; j < value.length; j += 1) {
+				visit(value[j], node, enter, leave, key, j);
 			}
 		}
 
-		else if ( value && value.type ) {
-			visit( value, node, enter, leave, key, null );
+		else if (value && value.type) {
+			visit(value, node, enter, leave, key, null);
 		}
 	}
 
-	if ( leave ) {
-		leave( node, parent, prop, index );
+	if (leave) {
+		leave(node, parent, prop, index);
 	}
 }
