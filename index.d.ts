@@ -6,7 +6,17 @@ declare module "estree-walker" {
     [propName: string]: any;
   }
 
-  export type WalkerListener = (node: Node, parent?: Node, prop?: string, index?: number) => void;
+  export type WalkerContext = {
+    skip: () => void;
+  };
+
+  export type WalkerListener = (
+    this: WalkerContext,
+    node: Node,
+    parent?: Node,
+    prop?: string,
+    index?: number
+  ) => void;
 
   export interface WalkerOptions {
     enter?: WalkerListener;
