@@ -1,5 +1,10 @@
 # changelog
 
+## 0.6.0
+
+* Fix walker context type
+* Update deps, remove unncessary Bublé transformation
+
 ## 0.5.2
 
 * Add types to package
