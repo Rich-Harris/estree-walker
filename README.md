@@ -19,10 +19,10 @@ var acorn = require( 'acorn' );
 ast = acorn.parse( sourceCode, options ); // https://github.com/marijnh/acorn
 
 walk( ast, {
-  enter: function ( node, parent ) {
+  enter: function ( node, parent, prop, index ) {
     // some code happens
   },
-  leave: function ( node, parent ) {
+  leave: function ( node, parent, prop, index ) {
   	// some code happens
   }
 });
