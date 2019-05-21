@@ -26,7 +26,7 @@ function visit(node, parent, enter, leave, prop, index) {
 		if (skipped) return;
 	}
 
-	const keys = childKeys[node.type] || (
+	const keys = node.type && childKeys[node.type] || (
 		childKeys[node.type] = Object.keys(node).filter(key => typeof node[key] === 'object')
 	);
 
