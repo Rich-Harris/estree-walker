@@ -16,7 +16,7 @@ npm i estree-walker
 var walk = require( 'estree-walker' ).walk;
 var acorn = require( 'acorn' );
 
-ast = acorn.parse( sourceCode, options ); // https://github.com/marijnh/acorn
+ast = acorn.parse( sourceCode, options ); // https://github.com/acornjs/acorn
 
 walk( ast, {
   enter: function ( node, parent, prop, index ) {
