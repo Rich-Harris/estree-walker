@@ -1,5 +1,10 @@
 # changelog
 
+## 0.6.1
+
+* Only traverse nodes that exist and have a type ([#9](https://github.com/Rich-Harris/estree-walker/pull/9))
+* Only cache keys for nodes with a type ([#8](https://github.com/Rich-Harris/estree-walker/pull/8))
+
 ## 0.6.0
 
 * Fix walker context type
