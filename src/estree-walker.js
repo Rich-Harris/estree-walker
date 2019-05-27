@@ -36,7 +36,7 @@ function visit(node, parent, enter, leave, prop, index) {
 
 		if (isArray(value)) {
 			for (let j = 0; j < value.length; j += 1) {
-				visit(value[j], node, enter, leave, key, j);
+				value[j] && value[j].type && visit(value[j], node, enter, leave, key, j);
 			}
 		}
 
