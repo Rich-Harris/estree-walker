@@ -16,7 +16,7 @@ function isArray(thing) {
 function visit(node, parent, enter, leave, prop, index) {
 	if (!node) return;
 
-	if (enter) {
+	if (enter && typeof enter === 'function') {
 		const _shouldSkip = shouldSkip;
 		shouldSkip = false;
 		enter.call(context, node, parent, prop, index);
@@ -45,7 +45,7 @@ function visit(node, parent, enter, leave, prop, index) {
 		}
 	}
 
-	if (leave) {
+	if (leave && typeof leave === 'function') {
 		leave(node, parent, prop, index);
 	}
 }
