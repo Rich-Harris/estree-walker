@@ -26,7 +26,7 @@ declare module "estree-walker" {
   export function walk(ast: Node, options: WalkerOptions): void;
 
 
-	type ChildKeys = {
+  type ChildKeys = {
     [nodeType: string]: string[]
   }
 
