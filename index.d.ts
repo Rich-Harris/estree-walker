@@ -24,4 +24,11 @@ declare module "estree-walker" {
   }
 
   export function walk(ast: Node, options: WalkerOptions): void;
+
+
+	type ChildKeys = {
+    [nodeType: string]: string[]
+  }
+
+  export const childKeys: ChildKeys
 }

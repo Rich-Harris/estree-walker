@@ -1,4 +1,4 @@
-export function walk(ast, { enter, leave }) {
+export function walk (ast, { enter, leave }) {
 	visit(ast, null, enter, leave);
 }
 
@@ -9,11 +9,11 @@ export const childKeys = {};
 
 const toString = Object.prototype.toString;
 
-function isArray(thing) {
+function isArray (thing) {
 	return toString.call(thing) === '[object Array]';
 }
 
-function visit(node, parent, enter, leave, prop, index) {
+function visit (node, parent, enter, leave, prop, index) {
 	if (!node) return;
 
 	if (enter) {
