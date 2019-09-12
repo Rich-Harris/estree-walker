@@ -1,5 +1,9 @@
 # changelog
 
+## 0.7.0
+
+* Add a `this.replace(node)` method
+
 ## 0.6.1
 
 * Only traverse nodes that exist and have a type ([#9](https://github.com/Rich-Harris/estree-walker/pull/9))

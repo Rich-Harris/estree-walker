@@ -30,6 +30,8 @@ walk( ast, {
 
 Inside the `enter` function, calling `this.skip()` will prevent the node's children being walked, or the `leave` function (which is optional) being called.
 
+Call `this.replace(new_node)` in either `enter` or `leave` to replace the current node with a new one.
+
 
 ## Why not use estraverse?
 
