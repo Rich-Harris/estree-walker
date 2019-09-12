@@ -1,12 +1,12 @@
-const { describe, it } = require( 'mocha' );
-const assert = require( 'assert' );
-const { walk, childKeys } = require( '..' );
+const { describe, it } = require('mocha');
+const assert = require('assert');
+const { walk, childKeys } = require('..');
 
-describe( 'estree-walker', () => {
-	it( 'walks a malformed node, if childKeys is populated', () => {
+describe('estree-walker', () => {
+	it('walks a malformed node, if childKeys is populated', () => {
 		// this test must come first, otherwise it doesn't have
 		// an opportunity to present
-		childKeys.Foo = [ 'answer' ];
+		childKeys.Foo = ['answer'];
 
 		const block = [
 			{
@@ -25,15 +25,15 @@ describe( 'estree-walker', () => {
 		let answer;
 
 		walk({ type: 'Test', block }, {
-			enter ( node ) {
-				if ( node.type === 'Answer' ) answer = node;
+			enter(node) {
+				if (node.type === 'Answer') answer = node;
 			}
 		});
 
 		assert.equal(answer, block[1].answer);
 	});
 
-	it( 'walks an AST', () => {
+	it('walks an AST', () => {
 		const ast = {
 			type: 'Program',
 			body: [{
@@ -58,16 +58,16 @@ describe( 'estree-walker', () => {
 		let entered = [];
 		let left = [];
 
-		walk( ast, {
-			enter ( node ) {
-				entered.push( node );
+		walk(ast, {
+			enter(node) {
+				entered.push(node);
 			},
-			leave ( node ) {
-				left.push( node );
+			leave(node) {
+				left.push(node);
 			}
 		});
 
-		assert.deepEqual( entered, [
+		assert.deepEqual(entered, [
 			ast,
 			ast.body[0],
 			ast.body[0].declarations[0],
@@ -78,7 +78,7 @@ describe( 'estree-walker', () => {
 			ast.body[0].declarations[1].init
 		]);
 
-		assert.deepEqual( left, [
+		assert.deepEqual(left, [
 			ast.body[0].declarations[0].id,
 			ast.body[0].declarations[0].init,
 			ast.body[0].declarations[0],
@@ -90,7 +90,7 @@ describe( 'estree-walker', () => {
 		]);
 	});
 
-	it( 'handles null literals', () => {
+	it('handles null literals', () => {
 		const ast = {
 			type: 'Program',
 			start: 0,
@@ -124,15 +124,15 @@ describe( 'estree-walker', () => {
 			sourceType: 'module'
 		};
 
-		walk( ast, {
-			enter () {},
-			leave () {}
+		walk(ast, {
+			enter() { },
+			leave() { }
 		});
 
-		assert.ok( true );
+		assert.ok(true);
 	});
 
-	it( 'allows walk() to be invoked within a walk, without context corruption', () => {
+	it('allows walk() to be invoked within a walk, without context corruption', () => {
 		const ast = {
 			type: 'Program',
 			start: 0,
@@ -165,11 +165,11 @@ describe( 'estree-walker', () => {
 
 		const identifiers = [];
 
-		walk( ast, {
-			enter (node) {
+		walk(ast, {
+			enter(node) {
 				if (node.type === 'ExpressionStatement') {
 					walk(node, {
-						enter () {
+						enter() {
 							this.skip();
 						}
 					});
