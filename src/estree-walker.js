@@ -1,9 +1,13 @@
 export function walk(ast, { enter, leave }) {
-	visit(ast, null, enter, leave);
+	return visit(ast, null, enter, leave);
 }
 
-let shouldSkip = false;
-const context = { skip: () => shouldSkip = true };
+let should_skip = false;
+let replacement = null;
+const context = {
+	skip: () => should_skip = true,
+	replace: node => replacement = node
+};
 
 export const childKeys = {};
 
@@ -13,39 +17,72 @@ function isArray(thing) {
 	return toString.call(thing) === '[object Array]';
 }
 
-function visit(node, parent, enter, leave, prop, index) {
-	if (!node) return;
-
-	if (enter) {
-		const _shouldSkip = shouldSkip;
-		shouldSkip = false;
-		enter.call(context, node, parent, prop, index);
-		const skipped = shouldSkip;
-		shouldSkip = _shouldSkip;
-
-		if (skipped) return;
+function replace(parent, prop, index, node) {
+	if (parent) {
+		if (index !== null) {
+			parent[prop][index] = node;
+		} else {
+			parent[prop] = node;
+		}
 	}
+}
 
-	const keys = node.type && childKeys[node.type] || (
-		childKeys[node.type] = Object.keys(node).filter(key => typeof node[key] === 'object')
-	);
+function visit(node, parent, enter, leave, prop, index) {
+	if (node) {
+		if (enter) {
+			const _should_skip = should_skip;
+			const _replacement = replacement;
+			should_skip = false;
+			replacement = null;
 
-	for (let i = 0; i < keys.length; i += 1) {
-		const key = keys[i];
-		const value = node[key];
+			enter.call(context, node, parent, prop, index);
 
-		if (isArray(value)) {
-			for (let j = 0; j < value.length; j += 1) {
-				value[j] && value[j].type && visit(value[j], node, enter, leave, key, j);
+			if (replacement) {
+				node = replacement;
+				replace(parent, prop, index, node);
+			}
+
+			const skipped = should_skip;
+
+			should_skip = _should_skip;
+			replacement = _replacement;
+
+			if (skipped) return node;
+		}
+
+		const keys = node.type && childKeys[node.type] || (
+			childKeys[node.type] = Object.keys(node).filter(key => typeof node[key] === 'object')
+		);
+
+		for (let i = 0; i < keys.length; i += 1) {
+			const key = keys[i];
+			const value = node[key];
+
+			if (isArray(value)) {
+				for (let j = 0; j < value.length; j += 1) {
+					value[j] && value[j].type && visit(value[j], node, enter, leave, key, j);
+				}
+			}
+
+			else if (value && value.type) {
+				visit(value, node, enter, leave, key, null);
 			}
 		}
 
-		else if (value && value.type) {
-			visit(value, node, enter, leave, key, null);
+		if (leave) {
+			const _replacement = replacement;
+			replacement = null;
+
+			leave.call(context, node, parent, prop, index);
+
+			if (replacement) {
+				node = replacement;
+				replace(parent, prop, index, node);
+			}
+
+			replacement = _replacement;
 		}
 	}
 
-	if (leave) {
-		leave(node, parent, prop, index);
-	}
+	return node;
 }

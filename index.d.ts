@@ -8,6 +8,7 @@ declare module "estree-walker" {
 
   export type WalkerContext = {
     skip: () => void;
+    replace: (replacement: Node) => void;
   };
 
   export type WalkerListener = (
@@ -23,5 +24,5 @@ declare module "estree-walker" {
     leave?: WalkerListener;
   }
 
-  export function walk(ast: Node, options: WalkerOptions): void;
+  export function walk(ast: Node, options: WalkerOptions): Node;
 }

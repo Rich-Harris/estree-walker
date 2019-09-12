@@ -183,4 +183,75 @@ describe('estree-walker', () => {
 
 		assert.deepEqual(identifiers, ['a', 'b']);
 	});
+
+	it('replaces a node', () => {
+		const ast = {
+			type: 'Program',
+			start: 0,
+			end: 8,
+			body: [{
+				type: 'ExpressionStatement',
+				start: 0,
+				end: 6,
+				expression: {
+					type: 'BinaryExpression',
+					start: 0,
+					end: 5,
+					left: {
+						type: 'Identifier',
+						start: 0,
+						end: 1,
+						name: 'a'
+					},
+					operator: '+',
+					right: {
+						type: 'Identifier',
+						start: 4,
+						end: 5,
+						name: 'b'
+					}
+				}
+			}],
+			sourceType: 'module'
+		};
+
+		const forty_two = {
+			type: 'Literal',
+			value: 42,
+			raw: '42'
+		};
+
+		walk(ast, {
+			enter(node) {
+				if (node.type === 'Identifier' && node.name === 'b') {
+					this.replace(forty_two);
+				}
+			}
+		});
+
+		assert.equal(ast.body[0].expression.right, forty_two);
+	});
+
+	it('replaces a top-level node', () => {
+		const ast = {
+			type: 'Identifier',
+			name: 'answer'
+		};
+
+		const forty_two = {
+			type: 'Literal',
+			value: 42,
+			raw: '42'
+		};
+
+		const node = walk(ast, {
+			enter(node) {
+				if (node.type === 'Identifier' && node.name === 'answer') {
+					this.replace(forty_two);
+				}
+			}
+		});
+
+		assert.equal(node, forty_two);
+	});
 });
