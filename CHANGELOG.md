@@ -1,5 +1,9 @@
 # changelog
 
+## 0.8.0
+
+* Adopt `estree` types
+
 ## 0.7.0
 
 * Add a `this.replace(node)` method
