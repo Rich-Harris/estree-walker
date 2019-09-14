@@ -1,4 +1,3 @@
-const { describe, it } = require('mocha');
 const assert = require('assert');
 const { walk, childKeys } = require('..');
 
@@ -185,51 +184,53 @@ describe('estree-walker', () => {
 	});
 
 	it('replaces a node', () => {
-		const ast = {
-			type: 'Program',
-			start: 0,
-			end: 8,
-			body: [{
-				type: 'ExpressionStatement',
+		['enter', 'leave'].forEach(phase => {
+			const ast = {
+				type: 'Program',
 				start: 0,
-				end: 6,
-				expression: {
-					type: 'BinaryExpression',
+				end: 8,
+				body: [{
+					type: 'ExpressionStatement',
 					start: 0,
-					end: 5,
-					left: {
-						type: 'Identifier',
+					end: 6,
+					expression: {
+						type: 'BinaryExpression',
 						start: 0,
-						end: 1,
-						name: 'a'
-					},
-					operator: '+',
-					right: {
-						type: 'Identifier',
-						start: 4,
 						end: 5,
-						name: 'b'
+						left: {
+							type: 'Identifier',
+							start: 0,
+							end: 1,
+							name: 'a'
+						},
+						operator: '+',
+						right: {
+							type: 'Identifier',
+							start: 4,
+							end: 5,
+							name: 'b'
+						}
+					}
+				}],
+				sourceType: 'module'
+			};
+
+			const forty_two = {
+				type: 'Literal',
+				value: 42,
+				raw: '42'
+			};
+
+			walk(ast, {
+				[phase](node) {
+					if (node.type === 'Identifier' && node.name === 'b') {
+						this.replace(forty_two);
 					}
 				}
-			}],
-			sourceType: 'module'
-		};
+			});
 
-		const forty_two = {
-			type: 'Literal',
-			value: 42,
-			raw: '42'
-		};
-
-		walk(ast, {
-			enter(node) {
-				if (node.type === 'Identifier' && node.name === 'b') {
-					this.replace(forty_two);
-				}
-			}
+			assert.equal(ast.body[0].expression.right, forty_two);
 		});
-
-		assert.equal(ast.body[0].expression.right, forty_two);
 	});
 
 	it('replaces a top-level node', () => {

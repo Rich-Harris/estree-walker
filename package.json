@@ -4,22 +4,27 @@
   "version": "0.7.0",
   "author": "Rich Harris",
   "license": "MIT",
-  "typings": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/Rich-Harris/estree-walker"
   },
   "main": "dist/estree-walker.umd.js",
   "module": "src/estree-walker.js",
+  "types": "types/index.d.ts",
   "scripts": {
-    "prepublishOnly": "npm test",
-    "build": "rollup -c",
-    "test": "mocha test/test.js",
-    "pretest": "npm run build"
+    "prepublishOnly": "npm run build && npm test",
+    "build-declarations": "tsc -d && node scripts/move-type-declarations.js",
+    "build": "npm run build-declarations && rollup -c",
+    "test": "mocha --opts mocha.opts"
   },
   "devDependencies": {
+    "@types/estree": "0.0.39",
     "mocha": "^5.2.0",
-    "rollup": "^0.67.3"
+    "rollup": "^0.67.3",
+    "rollup-plugin-sucrase": "^2.1.0",
+    "sander": "^0.6.0",
+    "tiny-glob": "^0.2.6",
+    "typescript": "^3.6.3"
   },
   "files": [
     "src",
