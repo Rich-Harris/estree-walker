@@ -1,5 +1,9 @@
 # changelog
 
+## 0.8.1
+
+* Fix pkg.files
+
 ## 0.8.0
 
 * Adopt `estree` types
