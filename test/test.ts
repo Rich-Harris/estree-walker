@@ -255,4 +255,104 @@ describe('estree-walker', () => {
 
 		assert.equal(node, forty_two);
 	});
+
+	it('removes a node property', () => {
+		['enter', 'leave'].forEach(phase => {
+			const ast = {
+				type: 'Program',
+				start: 0,
+				end: 8,
+				body: [{
+					type: 'ExpressionStatement',
+					start: 0,
+					end: 6,
+					expression: {
+						type: 'BinaryExpression',
+						start: 0,
+						end: 5,
+						left: {
+							type: 'Identifier',
+							start: 0,
+							end: 1,
+							name: 'a'
+						},
+						operator: '+',
+						right: {
+							type: 'Identifier',
+							start: 4,
+							end: 5,
+							name: 'b'
+						}
+					}
+				}],
+				sourceType: 'module'
+			};
+
+			walk(ast, {
+				[phase](node) {
+					if (node.type === 'Identifier' && node.name === 'b') {
+						this.remove();
+					}
+				}
+			});
+
+			assert.equal(ast.body[0].expression.right, undefined);
+		});
+	})
+
+	it('removes a node from array', () => {
+		['enter', 'leave'].forEach(phase => {
+			const ast = {
+				type: 'Program',
+				body: [{
+					type: 'VariableDeclaration',
+					declarations: [{
+						type: 'VariableDeclarator',
+						id: {
+							type: 'Identifier',
+							name: 'a',
+						},
+						init: null
+					},
+					{
+						type: 'VariableDeclarator',
+						id: {
+							type: 'Identifier',
+							name: 'b',
+						},
+						init: null
+					},
+					{
+						type: 'VariableDeclarator',
+						id: {
+							type: 'Identifier',
+							name: 'c',
+						},
+						init: null
+					}],
+					kind: 'let'
+				}],
+				sourceType: 'module'
+			};
+
+			const visitedIndex = [];
+
+			walk(ast, {
+				[phase](node, parent, key, index) {
+					if (node.type === 'VariableDeclarator') {
+						visitedIndex.push(index);
+						if (index === 1) {
+							this.remove();
+						}
+					}
+				}
+			});
+
+			assert.equal(ast.body[0].declarations.length, 2);
+			assert.equal(visitedIndex.length, 3);
+			assert.deepEqual(visitedIndex, [0, 1, 2]);
+			assert.equal(ast.body[0].declarations[0].id.name, 'a');
+			assert.equal(ast.body[0].declarations[1].id.name, 'c');
+		});
+	})
 });
