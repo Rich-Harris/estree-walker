@@ -32,7 +32,7 @@ Inside the `enter` function, calling `this.skip()` will prevent the node's child
 
 Call `this.replace(new_node)` in either `enter` or `leave` to replace the current node with a new one.
 
-Call `this.leave()` in either `enter` or `leave` to remove the current node.
+Call `this.remove()` in either `enter` or `leave` to remove the current node.
 
 ## Why not use estraverse?
 
