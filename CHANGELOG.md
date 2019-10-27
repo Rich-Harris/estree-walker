@@ -1,5 +1,9 @@
 # changelog
 
+## 0.9.0
+
+* Add `this.remove()` method
+
 ## 0.8.1
 
 * Fix pkg.files
