@@ -341,18 +341,17 @@ describe('estree-walker', () => {
 				[phase](node, parent, key, index) {
 					if (node.type === 'VariableDeclarator') {
 						visitedIndex.push(index);
-						if (index === 1) {
+						if (node.id.name === 'b' || node.id.name === 'a') {
 							this.remove();
 						}
 					}
 				}
 			});
 
-			assert.equal(ast.body[0].declarations.length, 2);
+			assert.equal(ast.body[0].declarations.length, 1);
 			assert.equal(visitedIndex.length, 3);
 			assert.deepEqual(visitedIndex, [0, 1, 2]);
-			assert.equal(ast.body[0].declarations[0].id.name, 'a');
-			assert.equal(ast.body[0].declarations[1].id.name, 'c');
+			assert.equal(ast.body[0].declarations[0].id.name, 'c');
 		});
 	})
 });

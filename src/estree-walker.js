@@ -2,6 +2,7 @@ function walk(ast, { enter, leave }) {
 	return visit(ast, null, enter, leave);
 }
 
+let remove_count = 0;
 let should_skip = false;
 let should_remove = false;
 let replacement = null;
@@ -26,7 +27,7 @@ function replace(parent, prop, index, node) {
 function remove(parent, prop, index) {
 	if (parent) {
 		if (index !== null) {
-			parent[prop].splice(index, 1);
+			parent[prop].splice(index - remove_count, 1);
 		} else {
 			delete parent[prop];
 		}
@@ -81,14 +82,18 @@ function visit(
 			const value = (node )[key];
 
 			if (Array.isArray(value)) {
+				const _remove_count = remove_count;
+				remove_count = 0;
 				for (let j = 0, k = 0; j < value.length; j += 1, k += 1) {
 					if (value[j] && value[j].type) {
 						if (!visit(value[j], node, enter, leave, key, k)) {
 							// removed
 							j--;
+							remove_count++;
 						}
 					}
 				}
+				remove_count = _remove_count;
 			}
 
 			else if (value && value.type) {
