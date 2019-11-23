@@ -21,8 +21,6 @@
     "mocha": "^5.2.0",
     "rollup": "^0.67.3",
     "rollup-plugin-sucrase": "^2.1.0",
-    "sander": "^0.6.0",
-    "tiny-glob": "^0.2.6",
     "typescript": "^3.6.3"
   },
   "files": [
