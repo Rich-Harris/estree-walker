@@ -13,8 +13,7 @@
   "types": "types/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run build && npm test",
-    "build-declarations": "tsc -d && node scripts/move-type-declarations.js",
-    "build": "npm run build-declarations && rollup -c",
+    "build": "tsc && rollup -c",
     "test": "mocha --opts mocha.opts"
   },
   "devDependencies": {
