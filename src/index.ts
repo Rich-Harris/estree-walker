@@ -100,7 +100,7 @@ function visit(
 
 			else if (Array.isArray(value)) {
 				for (let j = 0, k = 0; j < value.length; j += 1, k += 1) {
-					if (value[j] && value[j].type) {
+					if (value[j] !== null && typeof value[j].type === 'string') {
 						if (!visit(value[j], node, enter, leave, key, k)) {
 							// removed
 							j--;
@@ -109,7 +109,7 @@ function visit(
 				}
 			}
 
-			else if (value && value.type) {
+			else if (value !== null && typeof value.type === 'string') {
 				visit(value, node, enter, leave, key, null);
 			}
 		}
