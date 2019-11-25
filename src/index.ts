@@ -33,8 +33,6 @@ const context: WalkerContext = {
 	replace: (node: Node) => replacement = node
 };
 
-export const childKeys: Record<string, string[]> = {};
-
 function replace(parent: any, prop: string, index: number, node: Node) {
 	if (parent) {
 		if (index !== null) {
@@ -94,19 +92,18 @@ function visit(
 			if (removed) return null;
 		}
 
-		const keys = node.type && childKeys[node.type] || (
-			childKeys[node.type] = Object.keys(node).filter(key => typeof (node as any)[key] === 'object')
-		);
-
-		for (let i = 0; i < keys.length; i += 1) {
-			const key = keys[i];
+		for (const key in node) {
 			const value = (node as any)[key];
 
-			if (Array.isArray(value)) {
-				const _remove_count = remove_count;
+			if (typeof value !== 'object') {
+				continue;
+			}
+
+			else if (Array.isArray(value)) {
+        const _remove_count = remove_count;
 				remove_count = 0;
 				for (let j = 0, k = 0; j < value.length; j += 1, k += 1) {
-					if (value[j] && value[j].type) {
+					if (value[j] !== null && typeof value[j].type === 'string') {
 						if (!visit(value[j], node, enter, leave, key, k)) {
 							// removed
 							j--;
@@ -117,7 +114,7 @@ function visit(
 				remove_count = _remove_count;
 			}
 
-			else if (value && value.type) {
+			else if (value !== null && typeof value.type === 'string') {
 				visit(value, node, enter, leave, key, null);
 			}
 		}
@@ -140,7 +137,7 @@ function visit(
 			}
 
 			const removed = should_remove;
-			
+
 			replacement = _replacement;
 			should_remove = _should_remove;
 

@@ -1,7 +1,7 @@
 {
   "name": "estree-walker",
   "description": "Traverse an ESTree-compliant AST",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "author": "Rich Harris",
   "license": "MIT",
   "repository": {
@@ -13,8 +13,7 @@
   "types": "types/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run build && npm test",
-    "build-declarations": "tsc -d && node scripts/move-type-declarations.js",
-    "build": "npm run build-declarations && rollup -c",
+    "build": "tsc && rollup -c",
     "test": "mocha --opts mocha.opts"
   },
   "devDependencies": {
@@ -22,8 +21,6 @@
     "mocha": "^5.2.0",
     "rollup": "^0.67.3",
     "rollup-plugin-sucrase": "^2.1.0",
-    "sander": "^0.6.0",
-    "tiny-glob": "^0.2.6",
     "typescript": "^3.6.3"
   },
   "files": [

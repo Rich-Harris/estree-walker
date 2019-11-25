@@ -1,5 +1,9 @@
 # changelog
 
+## 1.0.0
+
+* Don't cache child keys
+
 ## 0.9.0
 
 * Add `this.remove()` method

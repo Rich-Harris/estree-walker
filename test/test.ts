@@ -1,12 +1,8 @@
 const assert = require('assert');
-const { walk, childKeys } = require('..');
+const { walk } = require('..');
 
 describe('estree-walker', () => {
-	it('walks a malformed node, if childKeys is populated', () => {
-		// this test must come first, otherwise it doesn't have
-		// an opportunity to present
-		childKeys.Foo = ['answer'];
-
+	it('walks a malformed node', () => {
 		const block = [
 			{
 				type: 'Foo',
