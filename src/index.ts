@@ -1,15 +1,15 @@
-import { Node } from "estree";
+import { BaseNode } from "estree";
 
 type WalkerContext = {
 	skip: () => void;
 	remove: () => void;
-	replace: (node: Node) => void;
+	replace: (node: BaseNode) => void;
 };
 
 type WalkerHandler = (
 	this: WalkerContext,
-	node: Node,
-	parent: Node,
+	node: BaseNode,
+	parent: BaseNode,
 	key: string,
 	index: number
 ) => void
@@ -19,20 +19,20 @@ type Walker = {
 	leave?: WalkerHandler;
 }
 
-export function walk(ast: Node, { enter, leave }: Walker) {
+export function walk(ast: BaseNode, { enter, leave }: Walker) {
 	return visit(ast, null, enter, leave);
 }
 
 let should_skip = false;
 let should_remove = false;
-let replacement: Node = null;
+let replacement: BaseNode = null;
 const context: WalkerContext = {
 	skip: () => should_skip = true,
 	remove: () => should_remove = true,
-	replace: (node: Node) => replacement = node
+	replace: (node: BaseNode) => replacement = node
 };
 
-function replace(parent: any, prop: string, index: number, node: Node) {
+function replace(parent: any, prop: string, index: number, node: BaseNode) {
 	if (parent) {
 		if (index !== null) {
 			parent[prop][index] = node;
@@ -53,8 +53,8 @@ function remove(parent: any, prop: string, index: number) {
 }
 
 function visit(
-	node: Node,
-	parent: Node,
+	node: BaseNode,
+	parent: BaseNode,
 	enter: WalkerHandler,
 	leave: WalkerHandler,
 	prop?: string,
