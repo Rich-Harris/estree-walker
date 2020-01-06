@@ -1,5 +1,9 @@
 # changelog
 
+## 1.0.1
+
+* Relax node type to `BaseNode` ([#17](https://github.com/Rich-Harris/estree-walker/pull/17))
+
 ## 1.0.0
 
 * Don't cache child keys
