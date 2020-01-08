@@ -79,7 +79,7 @@ function visit(
 			}
 
 			else if (Array.isArray(value)) {
-        const _remove_count = remove_count;
+				const _remove_count = remove_count;
 				remove_count = 0;
 				for (let j = 0, k = 0; j < value.length; j += 1, k += 1) {
 					if (value[j] !== null && typeof value[j].type === 'string') {
