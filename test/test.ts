@@ -337,7 +337,7 @@ describe('estree-walker', () => {
 				[phase](node, parent, key, index) {
 					if (node.type === 'VariableDeclarator') {
 						visitedIndex.push(index);
-						if (node.id.name === 'b' || node.id.name === 'a') {
+						if (node.id.name === 'a' || node.id.name === 'b') {
 							this.remove();
 						}
 					}
@@ -346,7 +346,7 @@ describe('estree-walker', () => {
 
 			assert.equal(ast.body[0].declarations.length, 1);
 			assert.equal(visitedIndex.length, 3);
-			assert.deepEqual(visitedIndex, [0, 1, 2]);
+			assert.deepEqual(visitedIndex, [0, 0, 0]);
 			assert.equal(ast.body[0].declarations[0].id.name, 'c');
 		});
 	})
