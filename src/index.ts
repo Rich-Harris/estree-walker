@@ -101,7 +101,7 @@ async function visit(
 			else if (Array.isArray(value)) {
 				for (let j = 0, k = 0; j < value.length; j += 1, k += 1) {
 					if (value[j] !== null && typeof value[j].type === 'string') {
-						if (!visit(value[j], node, enter, leave, key, k)) {
+						if (!await visit(value[j], node, enter, leave, key, k)) {
 							// removed
 							j--;
 						}
