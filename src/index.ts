@@ -12,15 +12,15 @@ type WalkerHandler = (
 	parent: BaseNode,
 	key: string,
 	index: number
-) => void
+) => Promise<void>
 
 type Walker = {
 	enter?: WalkerHandler;
 	leave?: WalkerHandler;
 }
 
-export function walk(ast: BaseNode, { enter, leave }: Walker) {
-	return visit(ast, null, enter, leave);
+export async function walk(ast: BaseNode, { enter, leave }: Walker): Promise<BaseNode> {
+	return await visit(ast, null, enter, leave);
 }
 
 let should_skip = false;
@@ -52,14 +52,14 @@ function remove(parent: any, prop: string, index: number) {
 	}
 }
 
-function visit(
+async function visit(
 	node: BaseNode,
 	parent: BaseNode,
 	enter: WalkerHandler,
 	leave: WalkerHandler,
 	prop?: string,
 	index?: number
-) {
+): Promise<BaseNode> {
 	if (node) {
 		if (enter) {
 			const _should_skip = should_skip;
@@ -69,7 +69,7 @@ function visit(
 			should_remove = false;
 			replacement = null;
 
-			enter.call(context, node, parent, prop, index);
+			await enter.call(context, node, parent, prop, index);
 
 			if (replacement) {
 				node = replacement;
@@ -110,7 +110,7 @@ function visit(
 			}
 
 			else if (value !== null && typeof value.type === 'string') {
-				visit(value, node, enter, leave, key, null);
+				await visit(value, node, enter, leave, key, null);
 			}
 		}
 
@@ -120,7 +120,7 @@ function visit(
 			replacement = null;
 			should_remove = false;
 
-			leave.call(context, node, parent, prop, index);
+			await leave.call(context, node, parent, prop, index);
 
 			if (replacement) {
 				node = replacement;

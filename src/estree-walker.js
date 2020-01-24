@@ -1,5 +1,5 @@
-function walk(ast, { enter, leave }) {
-	return visit(ast, null, enter, leave);
+async function walk(ast, { enter, leave }) {
+	return await visit(ast, null, enter, leave);
 }
 
 let should_skip = false;
@@ -31,7 +31,7 @@ function remove(parent, prop, index) {
 	}
 }
 
-function visit(
+async function visit(
 	node,
 	parent,
 	enter,
@@ -48,7 +48,7 @@ function visit(
 			should_remove = false;
 			replacement = null;
 
-			enter.call(context, node, parent, prop, index);
+			await enter.call(context, node, parent, prop, index);
 
 			if (replacement) {
 				node = replacement;
@@ -89,7 +89,7 @@ function visit(
 			}
 
 			else if (value !== null && typeof value.type === 'string') {
-				visit(value, node, enter, leave, key, null);
+				await visit(value, node, enter, leave, key, null);
 			}
 		}
 
@@ -99,7 +99,7 @@ function visit(
 			replacement = null;
 			should_remove = false;
 
-			leave.call(context, node, parent, prop, index);
+			await leave.call(context, node, parent, prop, index);
 
 			if (replacement) {
 				node = replacement;
