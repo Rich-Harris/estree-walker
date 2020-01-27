@@ -102,8 +102,8 @@
         "signature": "89ccbe04e737ce613f5f04990271cfa84901446350b8551b0555ddf19319723b"
       },
       "./src/index.ts": {
-        "version": "a237158ddf175420581410495ad99c80166e16c5c02093f63bd81377adb2084f",
-        "signature": "8bf2573983268be53c05b3b3b2a26f3e18bca833fd72e53edceadbd4794c45c7"
+        "version": "ea06aca6b138fb3ba9e673b3c45af97de40fb4e04ca398c1b788f8de1b4bdda6",
+        "signature": "3a65aa4f589655eb2064dac91d3e07b9543023e32dae040ad5940d7b6f3fecd0"
       }
     },
     "options": {
@@ -134,13 +134,10 @@
       ]
     },
     "semanticDiagnosticsPerFile": [
-      "./node_modules/@types/estree/index.d.ts",
-      "./src/index.ts",
+      "./node_modules/typescript/lib/lib.es5.d.ts",
       "./node_modules/typescript/lib/lib.es2015.d.ts",
       "./node_modules/typescript/lib/lib.es2016.d.ts",
       "./node_modules/typescript/lib/lib.es2017.d.ts",
-      "./node_modules/typescript/lib/lib.es2017.full.d.ts",
-      "./node_modules/typescript/lib/lib.es5.d.ts",
       "./node_modules/typescript/lib/lib.dom.d.ts",
       "./node_modules/typescript/lib/lib.dom.iterable.d.ts",
       "./node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
@@ -159,7 +156,10 @@
       "./node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts",
       "./node_modules/typescript/lib/lib.es2017.string.d.ts",
       "./node_modules/typescript/lib/lib.es2017.intl.d.ts",
-      "./node_modules/typescript/lib/lib.es2017.typedarrays.d.ts"
+      "./node_modules/typescript/lib/lib.es2017.typedarrays.d.ts",
+      "./node_modules/typescript/lib/lib.es2017.full.d.ts",
+      "./node_modules/@types/estree/index.d.ts",
+      "./src/index.ts"
     ]
   },
   "version": "3.7.5"

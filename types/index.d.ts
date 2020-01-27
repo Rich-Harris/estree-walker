@@ -9,5 +9,5 @@ declare type Walker = {
     enter?: WalkerHandler;
     leave?: WalkerHandler;
 };
-export declare function walk(ast: BaseNode, { enter, leave }: Walker): Promise<BaseNode>;
+export declare function walk(ast: BaseNode, walker: Walker): Promise<BaseNode>;
 export {};

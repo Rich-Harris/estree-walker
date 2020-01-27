@@ -3,6 +3,38 @@ const { walk } = require("..");
 
 describe("estree-walker", () => {
   it("walks a malformed node", async () => {
+    const block = {
+      type: 'Program',
+      body: [
+        {
+          type: 'ImportDeclaration',
+          source: []
+        },
+        {
+          type: 'ExpressionStatement',
+          expression: []
+        }
+      ]
+    };
+
+    let encounteredExpression = false;
+
+    await walk(
+      { type: "Test", block },
+      {
+        enter: await function(node) {
+          if (node.type === "ImportDeclaration") {
+            encounteredExpression = true;
+            this.skip();
+          }
+        }
+      }
+    );
+
+    assert.equal(encounteredExpression, true);
+  });
+
+  it("walks a malformed node", async () => {
     const block = [
       {
         type: "Foo",
