@@ -1,13 +1,5 @@
 import { BaseNode } from "estree";
-declare type WalkerContext = {
-    skip: () => void;
-    remove: () => void;
-    replace: (node: BaseNode) => void;
-};
-declare type WalkerHandler = (this: WalkerContext, node: BaseNode, parent: BaseNode, key: string, index: number) => Promise<void>;
-declare type Walker = {
-    enter?: WalkerHandler;
-    leave?: WalkerHandler;
-};
-export declare function walk(ast: BaseNode, walker: Walker): Promise<BaseNode>;
-export {};
+import { SyncWalker } from "./sync";
+import { AsyncWalker } from "./async";
+export declare function walk(ast: BaseNode, walker: SyncWalker): BaseNode;
+export declare function asyncWalk(ast: BaseNode, walker: AsyncWalker): Promise<BaseNode>;

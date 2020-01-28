@@ -101,9 +101,21 @@
         "version": "89ccbe04e737ce613f5f04990271cfa84901446350b8551b0555ddf19319723b",
         "signature": "89ccbe04e737ce613f5f04990271cfa84901446350b8551b0555ddf19319723b"
       },
+      "./src/walker.ts": {
+        "version": "07b27a301a04ee4cd1625b5ecdf6c34337e1f280e1254aea46a27337e3a80405",
+        "signature": "3d98b727e5e493bf295c99b267a0ec780652e302cf46cfa6eb6557e84a0c1270"
+      },
+      "./src/async.ts": {
+        "version": "b03dbb27a846f9d01ed6cb157b1146ddfb20bf8f42158635018b824b97a75257",
+        "signature": "e757b86a7eab29d70f2b27290861a453cde71d79c06f0756b246962a59864c48"
+      },
+      "./src/sync.ts": {
+        "version": "4571bb007a3292075fb32a0636893cd1dba9f9a8005de92c68bf14cb7785155d",
+        "signature": "df579955d366c5a10179dc0a657c6baf8aa0e799e948cfa2c298d9a57fa93cc2"
+      },
       "./src/index.ts": {
-        "version": "ea06aca6b138fb3ba9e673b3c45af97de40fb4e04ca398c1b788f8de1b4bdda6",
-        "signature": "3a65aa4f589655eb2064dac91d3e07b9543023e32dae040ad5940d7b6f3fecd0"
+        "version": "20bc8dce09c091906e0903d34120f005c398c96341319ed647035bd163d4d4d9",
+        "signature": "b18e6b9347b99ca91364afaa0f340ba854eddff08bc18820d21ba9ca6ab65d50"
       }
     },
     "options": {
@@ -124,13 +136,39 @@
       "configFilePath": "./tsconfig.json"
     },
     "referencedMap": {
-      "./src/index.ts": [
+      "./src/walker.ts": [
         "./node_modules/@types/estree/index.d.ts"
+      ],
+      "./src/async.ts": [
+        "./src/walker.ts",
+        "./node_modules/@types/estree/index.d.ts"
+      ],
+      "./src/sync.ts": [
+        "./src/walker.ts",
+        "./node_modules/@types/estree/index.d.ts"
+      ],
+      "./src/index.ts": [
+        "./node_modules/@types/estree/index.d.ts",
+        "./src/sync.ts",
+        "./src/async.ts"
       ]
     },
     "exportedModulesMap": {
-      "./src/index.ts": [
+      "./src/walker.ts": [
         "./node_modules/@types/estree/index.d.ts"
+      ],
+      "./src/async.ts": [
+        "./src/walker.ts",
+        "./node_modules/@types/estree/index.d.ts"
+      ],
+      "./src/sync.ts": [
+        "./src/walker.ts",
+        "./node_modules/@types/estree/index.d.ts"
+      ],
+      "./src/index.ts": [
+        "./node_modules/@types/estree/index.d.ts",
+        "./src/sync.ts",
+        "./src/async.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -159,6 +197,9 @@
       "./node_modules/typescript/lib/lib.es2017.typedarrays.d.ts",
       "./node_modules/typescript/lib/lib.es2017.full.d.ts",
       "./node_modules/@types/estree/index.d.ts",
+      "./src/walker.ts",
+      "./src/async.ts",
+      "./src/sync.ts",
       "./src/index.ts"
     ]
   },
