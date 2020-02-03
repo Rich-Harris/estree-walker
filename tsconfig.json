@@ -14,7 +14,8 @@
 		"noImplicitAny": true,
 		"diagnostics": true,
 		"noImplicitThis": true,
-		"noEmitOnError": true
+		"noEmitOnError": true,
+		"incremental": true,
 	},
 
 	"include": [

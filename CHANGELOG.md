@@ -1,5 +1,10 @@
 # changelog
 
+## 2.0.0
+
+* Add an `asyncWalk` export ([#20](https://github.com/Rich-Harris/estree-walker/pull/20))
+* Internal rewrite
+
 ## 1.0.1
 
 * Relax node type to `BaseNode` ([#17](https://github.com/Rich-Harris/estree-walker/pull/17))
