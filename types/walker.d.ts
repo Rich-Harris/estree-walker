@@ -1,4 +1,4 @@
-import { BaseNode } from "estree";
+import type { BaseNode } from "estree";
 export declare type WalkerContext = {
     skip: () => void;
     remove: () => void;

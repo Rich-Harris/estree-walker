@@ -13,15 +13,17 @@
   "module": "src/estree-walker.js",
   "types": "types/index.d.ts",
   "scripts": {
+    "build": "rollup -c",
+    "foobar": "tsc -p tsconfig.json --emitDeclarationOnly",
     "prepublishOnly": "npm run build && npm test",
-    "build": "tsc && rollup -c",
     "test": "mocha --opts mocha.opts"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^7.1.3",
     "@types/estree": "0.0.42",
     "mocha": "^5.2.0",
-    "rollup": "^0.67.3",
-    "rollup-plugin-sucrase": "^2.1.0",
+    "rollup": "^2.8.0",
+    "rollup-plugin-typescript2": "^0.27.0",
     "typescript": "^3.8.0"
   },
   "files": [

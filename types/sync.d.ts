@@ -1,5 +1,5 @@
 import { WalkerBase, WalkerContext } from "./walker";
-import { BaseNode } from "estree";
+import type { BaseNode } from "estree";
 export declare type SyncWalker = {
     enter?: WalkerHandler;
     leave?: WalkerHandler;

@@ -8,14 +8,11 @@
 		"declaration": true,
 		"declarationDir": "types",
 
-		"emitDeclarationOnly": true,
 		"newLine": "lf",
-
-		"noImplicitAny": true,
 		"diagnostics": true,
+		"noImplicitAny": true,
 		"noImplicitThis": true,
 		"noEmitOnError": true,
-		"incremental": true,
 	},
 
 	"include": [
