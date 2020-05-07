@@ -3,8 +3,6 @@
 		"target": "es2017",
 		"module": "esnext",
 
-		"types": ["estree"],
-
 		"declaration": true,
 		"declarationDir": "types",
 
