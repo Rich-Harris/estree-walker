@@ -13,9 +13,9 @@
   "module": "src/estree-walker.js",
   "types": "types/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
-    "foobar": "tsc -p tsconfig.json --emitDeclarationOnly",
     "prepublishOnly": "npm run build && npm test",
+    "prebuild": "tsc -p tsconfig.json --emitDeclarationOnly",
+    "build": "rollup -c",
     "test": "mocha --opts mocha.opts"
   },
   "devDependencies": {
