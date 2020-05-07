@@ -22,7 +22,7 @@
     "mocha": "^5.2.0",
     "rollup": "^0.67.3",
     "rollup-plugin-sucrase": "^2.1.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.0"
   },
   "files": [
     "src",

@@ -1,6 +1,6 @@
-import { BaseNode } from "estree";
-import { SyncWalkerClass, SyncWalker } from "./sync";
 import { AsyncWalkerClass, AsyncWalker } from "./async";
+import { SyncWalkerClass, SyncWalker } from "./sync";
+import type { BaseNode } from "estree";
 
 export function walk(ast: BaseNode, walker: SyncWalker): BaseNode {
 	const instance = new SyncWalkerClass(walker);
