@@ -1,3 +1,4 @@
+// @ts-check
 const uvu = require('uvu');
 const assert = require('uvu/assert');
 const { walk, asyncWalk } = require('..');
