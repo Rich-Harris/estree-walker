@@ -20,14 +20,14 @@
   "scripts": {
     "prepublishOnly": "npm run build && npm test",
     "build": "tsc && rollup -c",
-    "test": "mocha --opts mocha.opts"
+    "test": "uvu test -r sucrase/register"
   },
   "devDependencies": {
     "@types/estree": "0.0.42",
-    "mocha": "^5.2.0",
     "rollup": "^2.10.9",
     "rollup-plugin-sucrase": "^2.1.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "uvu": "^0.5.1"
   },
   "files": [
     "src",

@@ -1,17 +1,24 @@
-const assert = require("assert");
-const { walk, asyncWalk } = require("..");
+const uvu = require('uvu');
+const assert = require('uvu/assert');
+const { walk, asyncWalk } = require('..');
 
-describe("sync estree-walker", () => {
-	it("walks a malformed node", () => {
+function describe(name, fn) {
+	const suite = uvu.suite(name);
+	fn(suite);
+	suite.run();
+}
+
+describe('sync estree-walker', it => {
+	it('walks a malformed node', () => {
 		const block = [
 			{
-				type: "Foo",
+				type: 'Foo',
 				answer: undefined
 			},
 			{
-				type: "Foo",
+				type: 'Foo',
 				answer: {
-					type: "Answer",
+					type: 'Answer',
 					value: 42
 				}
 			}
@@ -20,10 +27,10 @@ describe("sync estree-walker", () => {
 		let answer;
 
 		walk(
-			{ type: "Test", block },
+			{ type: 'Test', block },
 			{
 				enter(node) {
-					if (node.type === "Answer") answer = node;
+					if (node.type === 'Answer') answer = node;
 				}
 			}
 		);
@@ -31,28 +38,28 @@ describe("sync estree-walker", () => {
 		assert.equal(answer, block[1].answer);
 	});
 
-	it("walks an AST", () => {
+	it('walks an AST', () => {
 		const ast = {
-			type: "Program",
+			type: 'Program',
 			body: [
 				{
-					type: "VariableDeclaration",
+					type: 'VariableDeclaration',
 					declarations: [
 						{
-							type: "VariableDeclarator",
-							id: { type: "Identifier", name: "a" },
-							init: { type: "Literal", value: 1, raw: "1" }
+							type: 'VariableDeclarator',
+							id: { type: 'Identifier', name: 'a' },
+							init: { type: 'Literal', value: 1, raw: '1' }
 						},
 						{
-							type: "VariableDeclarator",
-							id: { type: "Identifier", name: "b" },
-							init: { type: "Literal", value: 2, raw: "2" }
+							type: 'VariableDeclarator',
+							id: { type: 'Identifier', name: 'b' },
+							init: { type: 'Literal', value: 2, raw: '2' }
 						}
 					],
-					kind: "var"
+					kind: 'var'
 				}
 			],
-			sourceType: "module"
+			sourceType: 'module'
 		};
 
 		let entered = [];
@@ -67,7 +74,7 @@ describe("sync estree-walker", () => {
 			}
 		});
 
-		assert.deepEqual(entered, [
+		assert.equal(entered, [
 			ast,
 			ast.body[0],
 			ast.body[0].declarations[0],
@@ -78,7 +85,7 @@ describe("sync estree-walker", () => {
 			ast.body[0].declarations[1].init
 		]);
 
-		assert.deepEqual(left, [
+		assert.equal(left, [
 			ast.body[0].declarations[0].id,
 			ast.body[0].declarations[0].init,
 			ast.body[0].declarations[0],
@@ -90,86 +97,86 @@ describe("sync estree-walker", () => {
 		]);
 	});
 
-	it("handles null literals", () => {
+	it('handles null literals', () => {
 		const ast = {
-			type: "Program",
+			type: 'Program',
 			start: 0,
 			end: 8,
 			body: [
 				{
-					type: "ExpressionStatement",
+					type: 'ExpressionStatement',
 					start: 0,
 					end: 5,
 					expression: {
-						type: "Literal",
+						type: 'Literal',
 						start: 0,
 						end: 4,
 						value: null,
-						raw: "null"
+						raw: 'null'
 					}
 				},
 				{
-					type: "ExpressionStatement",
+					type: 'ExpressionStatement',
 					start: 6,
 					end: 8,
 					expression: {
-						type: "Literal",
+						type: 'Literal',
 						start: 6,
 						end: 7,
 						value: 1,
-						raw: "1"
+						raw: '1'
 					}
 				}
 			],
-			sourceType: "module"
+			sourceType: 'module'
 		};
 
 		walk(ast, {
-			enter() { },
-			leave() { }
+			enter() {},
+			leave() {}
 		});
 
 		assert.ok(true);
 	});
 
-	it("allows walk() to be invoked within a walk, without context corruption", () => {
+	it('allows walk() to be invoked within a walk, without context corruption', () => {
 		const ast = {
-			type: "Program",
+			type: 'Program',
 			start: 0,
 			end: 8,
 			body: [
 				{
-					type: "ExpressionStatement",
+					type: 'ExpressionStatement',
 					start: 0,
 					end: 6,
 					expression: {
-						type: "BinaryExpression",
+						type: 'BinaryExpression',
 						start: 0,
 						end: 5,
 						left: {
-							type: "Identifier",
+							type: 'Identifier',
 							start: 0,
 							end: 1,
-							name: "a"
+							name: 'a'
 						},
-						operator: "+",
+						operator: '+',
 						right: {
-							type: "Identifier",
+							type: 'Identifier',
 							start: 4,
 							end: 5,
-							name: "b"
+							name: 'b'
 						}
 					}
 				}
 			],
-			sourceType: "module"
+			sourceType: 'module'
 		};
 
 		const identifiers = [];
 
 		walk(ast, {
 			enter(node) {
-				if (node.type === "ExpressionStatement") {
+				if (node.type === 'ExpressionStatement') {
 					walk(node, {
 						enter() {
 							this.skip();
@@ -177,59 +184,59 @@ describe("sync estree-walker", () => {
 					});
 				}
 
-				if (node.type === "Identifier") {
+				if (node.type === 'Identifier') {
 					identifiers.push(node.name);
 				}
 			}
 		});
 
-		assert.deepEqual(identifiers, ["a", "b"]);
+		assert.equal(identifiers, ['a', 'b']);
 	});
 
-	it("replaces a node", () => {
-		const phases = ["enter", "leave"];
+	it('replaces a node', () => {
+		const phases = ['enter', 'leave'];
 		for (const phase of phases) {
 			const ast = {
-				type: "Program",
+				type: 'Program',
 				start: 0,
 				end: 8,
 				body: [
 					{
-						type: "ExpressionStatement",
+						type: 'ExpressionStatement',
 						start: 0,
 						end: 6,
 						expression: {
-							type: "BinaryExpression",
+							type: 'BinaryExpression',
 							start: 0,
 							end: 5,
 							left: {
-								type: "Identifier",
+								type: 'Identifier',
 								start: 0,
 								end: 1,
-								name: "a"
+								name: 'a'
 							},
-							operator: "+",
+							operator: '+',
 							right: {
-								type: "Identifier",
+								type: 'Identifier',
 								start: 4,
 								end: 5,
-								name: "b"
+								name: 'b'
 							}
 						}
 					}
 				],
-				sourceType: "module"
+				sourceType: 'module'
 			};
 
 			const forty_two = {
-				type: "Literal",
+				type: 'Literal',
 				value: 42,
-				raw: "42"
+				raw: '42'
 			};
 
 			walk(ast, {
 				[phase](node) {
-					if (node.type === "Identifier" && node.name === "b") {
+					if (node.type === 'Identifier' && node.name === 'b') {
 						this.replace(forty_two);
 					}
 				}
@@ -239,21 +246,21 @@ describe("sync estree-walker", () => {
 		}
 	});
 
-	it("replaces a top-level node", () => {
+	it('replaces a top-level node', () => {
 		const ast = {
-			type: "Identifier",
-			name: "answer"
+			type: 'Identifier',
+			name: 'answer'
 		};
 
 		const forty_two = {
-			type: "Literal",
+			type: 'Literal',
 			value: 42,
-			raw: "42"
+			raw: '42'
 		};
 
 		const node = walk(ast, {
 			enter(node) {
-				if (node.type === "Identifier" && node.name === "answer") {
+				if (node.type === 'Identifier' && node.name === 'answer') {
 					this.replace(forty_two);
 				}
 			}
@@ -262,44 +269,44 @@ describe("sync estree-walker", () => {
 		assert.equal(node, forty_two);
 	});
 
-	it("removes a node property", () => {
-		const phases = ["enter", "leave"];
+	it('removes a node property', () => {
+		const phases = ['enter', 'leave'];
 		for (const phase of phases) {
 			const ast = {
-				type: "Program",
+				type: 'Program',
 				start: 0,
 				end: 8,
 				body: [
 					{
-						type: "ExpressionStatement",
+						type: 'ExpressionStatement',
 						start: 0,
 						end: 6,
 						expression: {
-							type: "BinaryExpression",
+							type: 'BinaryExpression',
 							start: 0,
 							end: 5,
 							left: {
-								type: "Identifier",
+								type: 'Identifier',
 								start: 0,
 								end: 1,
-								name: "a"
+								name: 'a'
 							},
-							operator: "+",
+							operator: '+',
 							right: {
-								type: "Identifier",
+								type: 'Identifier',
 								start: 4,
 								end: 5,
-								name: "b"
+								name: 'b'
 							}
 						}
 					}
 				],
-				sourceType: "module"
+				sourceType: 'module'
 			};
 
 			walk(ast, {
 				[phase](node) {
-					if (node.type === "Identifier" && node.name === "b") {
+					if (node.type === 'Identifier' && node.name === 'b') {
 						this.remove();
 					}
 				}
@@ -309,51 +316,51 @@ describe("sync estree-walker", () => {
 		}
 	});
 
-	it("removes a node from array", () => {
-		const phases = ["enter", "leave"];
+	it('removes a node from array', () => {
+		const phases = ['enter', 'leave'];
 		for (const phase of phases) {
 			const ast = {
-				type: "Program",
+				type: 'Program',
 				body: [
 					{
-						type: "VariableDeclaration",
+						type: 'VariableDeclaration',
 						declarations: [
 							{
-								type: "VariableDeclarator",
+								type: 'VariableDeclarator',
 								id: {
-									type: "Identifier",
-									name: "a"
+									type: 'Identifier',
+									name: 'a'
 								},
 								init: null
 							},
 							{
-								type: "VariableDeclarator",
+								type: 'VariableDeclarator',
 								id: {
-									type: "Identifier",
-									name: "b"
+									type: 'Identifier',
+									name: 'b'
 								},
 								init: null
 							},
 							{
-								type: "VariableDeclarator",
+								type: 'VariableDeclarator',
 								id: {
-									type: "Identifier",
-									name: "c"
+									type: 'Identifier',
+									name: 'c'
 								},
 								init: null
 							}
 						],
-						kind: "let"
+						kind: 'let'
 					}
 				],
-				sourceType: "module"
+				sourceType: 'module'
 			};
 
 			const visitedIndex = [];
 
 			walk(ast, {
 				[phase](node, parent, key, index) {
-					if (node.type === "VariableDeclarator") {
+					if (node.type === 'VariableDeclarator') {
 						visitedIndex.push(index);
 						if (node.id.name === 'a' || node.id.name === 'b') {
 							this.remove();
@@ -364,23 +371,23 @@ describe("sync estree-walker", () => {
 
 			assert.equal(ast.body[0].declarations.length, 1);
 			assert.equal(visitedIndex.length, 3);
-			assert.deepEqual(visitedIndex, [0, 0, 0]);
+			assert.equal(visitedIndex, [0, 0, 0]);
 			assert.equal(ast.body[0].declarations[0].id.name, 'c');
 		}
 	});
 });
 
-describe("async estree-walker", () => {
-	it("walks a malformed node", async () => {
+describe('async estree-walker', it => {
+	it('walks a malformed node', async () => {
 		const block = [
 			{
-				type: "Foo",
+				type: 'Foo',
 				answer: undefined
 			},
 			{
-				type: "Foo",
+				type: 'Foo',
 				answer: {
-					type: "Answer",
+					type: 'Answer',
 					value: 42
 				}
 			}
@@ -389,10 +396,10 @@ describe("async estree-walker", () => {
 		let answer;
 
 		await asyncWalk(
-			{ type: "Test", block },
+			{ type: 'Test', block },
 			{
 				enter(node) {
-					if (node.type === "Answer") answer = node;
+					if (node.type === 'Answer') answer = node;
 				}
 			}
 		);
@@ -400,28 +407,28 @@ describe("async estree-walker", () => {
 		assert.equal(answer, block[1].answer);
 	});
 
-	it("walks an AST", async () => {
+	it('walks an AST', async () => {
 		const ast = {
-			type: "Program",
+			type: 'Program',
 			body: [
 				{
-					type: "VariableDeclaration",
+					type: 'VariableDeclaration',
 					declarations: [
 						{
-							type: "VariableDeclarator",
-							id: { type: "Identifier", name: "a" },
-							init: { type: "Literal", value: 1, raw: "1" }
+							type: 'VariableDeclarator',
+							id: { type: 'Identifier', name: 'a' },
+							init: { type: 'Literal', value: 1, raw: '1' }
 						},
 						{
-							type: "VariableDeclarator",
-							id: { type: "Identifier", name: "b" },
-							init: { type: "Literal", value: 2, raw: "2" }
+							type: 'VariableDeclarator',
+							id: { type: 'Identifier', name: 'b' },
+							init: { type: 'Literal', value: 2, raw: '2' }
 						}
 					],
-					kind: "var"
+					kind: 'var'
 				}
 			],
-			sourceType: "module"
+			sourceType: 'module'
 		};
 
 		let entered = [];
@@ -436,7 +443,7 @@ describe("async estree-walker", () => {
 			}
 		});
 
-		assert.deepEqual(entered, [
+		assert.equal(entered, [
 			ast,
 			ast.body[0],
 			ast.body[0].declarations[0],
@@ -447,7 +454,7 @@ describe("async estree-walker", () => {
 			ast.body[0].declarations[1].init
 		]);
 
-		assert.deepEqual(left, [
+		assert.equal(left, [
 			ast.body[0].declarations[0].id,
 			ast.body[0].declarations[0].init,
 			ast.body[0].declarations[0],
@@ -459,86 +466,86 @@ describe("async estree-walker", () => {
 		]);
 	});
 
-	it("handles null literals", async () => {
+	it('handles null literals', async () => {
 		const ast = {
-			type: "Program",
+			type: 'Program',
 			start: 0,
 			end: 8,
 			body: [
 				{
-					type: "ExpressionStatement",
+					type: 'ExpressionStatement',
 					start: 0,
 					end: 5,
 					expression: {
-						type: "Literal",
+						type: 'Literal',
 						start: 0,
 						end: 4,
 						value: null,
-						raw: "null"
+						raw: 'null'
 					}
 				},
 				{
-					type: "ExpressionStatement",
+					type: 'ExpressionStatement',
 					start: 6,
 					end: 8,
 					expression: {
-						type: "Literal",
+						type: 'Literal',
 						start: 6,
 						end: 7,
 						value: 1,
-						raw: "1"
+						raw: '1'
 					}
 				}
 			],
-			sourceType: "module"
+			sourceType: 'module'
 		};
 
 		await asyncWalk(ast, {
-			enter() { },
-			leave() { }
+			enter() {},
+			leave() {}
 		});
 
 		assert.ok(true);
 	});
 
-	it("allows asyncWalk() to be invoked within a walk, without context corruption", async () => {
+	it('allows asyncWalk() to be invoked within a walk, without context corruption', async () => {
 		const ast = {
-			type: "Program",
+			type: 'Program',
 			start: 0,
 			end: 8,
 			body: [
 				{
-					type: "ExpressionStatement",
+					type: 'ExpressionStatement',
 					start: 0,
 					end: 6,
 					expression: {
-						type: "BinaryExpression",
+						type: 'BinaryExpression',
 						start: 0,
 						end: 5,
 						left: {
-							type: "Identifier",
+							type: 'Identifier',
 							start: 0,
 							end: 1,
-							name: "a"
+							name: 'a'
 						},
-						operator: "+",
+						operator: '+',
 						right: {
-							type: "Identifier",
+							type: 'Identifier',
 							start: 4,
 							end: 5,
-							name: "b"
+							name: 'b'
 						}
 					}
 				}
 			],
-			sourceType: "module"
+			sourceType: 'module'
 		};
 
 		const identifiers = [];
 
 		await asyncWalk(ast, {
 			async enter(node) {
-				if (node.type === "ExpressionStatement") {
+				if (node.type === 'ExpressionStatement') {
 					await asyncWalk(node, {
 						enter() {
 							this.skip();
@@ -546,59 +553,59 @@ describe("async estree-walker", () => {
 					});
 				}
 
-				if (node.type === "Identifier") {
+				if (node.type === 'Identifier') {
 					identifiers.push(node.name);
 				}
 			}
 		});
 
-		assert.deepEqual(identifiers, ["a", "b"]);
+		assert.equal(identifiers, ['a', 'b']);
 	});
 
-	it("replaces a node", async () => {
-		const phases = ["enter", "leave"];
+	it('replaces a node', async () => {
+		const phases = ['enter', 'leave'];
 		for await (const phase of phases) {
 			const ast = {
-				type: "Program",
+				type: 'Program',
 				start: 0,
 				end: 8,
 				body: [
 					{
-						type: "ExpressionStatement",
+						type: 'ExpressionStatement',
 						start: 0,
 						end: 6,
 						expression: {
-							type: "BinaryExpression",
+							type: 'BinaryExpression',
 							start: 0,
 							end: 5,
 							left: {
-								type: "Identifier",
+								type: 'Identifier',
 								start: 0,
 								end: 1,
-								name: "a"
+								name: 'a'
 							},
-							operator: "+",
+							operator: '+',
 							right: {
-								type: "Identifier",
+								type: 'Identifier',
 								start: 4,
 								end: 5,
-								name: "b"
+								name: 'b'
 							}
 						}
 					}
 				],
-				sourceType: "module"
+				sourceType: 'module'
 			};
 
 			const forty_two = {
-				type: "Literal",
+				type: 'Literal',
 				value: 42,
-				raw: "42"
+				raw: '42'
 			};
 
 			await asyncWalk(ast, {
 				[phase](node) {
-					if (node.type === "Identifier" && node.name === "b") {
+					if (node.type === 'Identifier' && node.name === 'b') {
 						this.replace(forty_two);
 					}
 				}
@@ -608,21 +615,21 @@ describe("async estree-walker", () => {
 		}
 	});
 
-	it("replaces a top-level node", async () => {
+	it('replaces a top-level node', async () => {
 		const ast = {
-			type: "Identifier",
-			name: "answer"
+			type: 'Identifier',
+			name: 'answer'
 		};
 
 		const forty_two = {
-			type: "Literal",
+			type: 'Literal',
 			value: 42,
-			raw: "42"
+			raw: '42'
 		};
 
 		const node = await asyncWalk(ast, {
 			enter(node) {
-				if (node.type === "Identifier" && node.name === "answer") {
+				if (node.type === 'Identifier' && node.name === 'answer') {
 					this.replace(forty_two);
 				}
 			}
@@ -631,44 +638,44 @@ describe("async estree-walker", () => {
 		assert.equal(node, forty_two);
 	});
 
-	it("removes a node property", async () => {
-		const phases = ["enter", "leave"];
+	it('removes a node property', async () => {
+		const phases = ['enter', 'leave'];
 		for await (const phase of phases) {
 			const ast = {
-				type: "Program",
+				type: 'Program',
 				start: 0,
 				end: 8,
 				body: [
 					{
-						type: "ExpressionStatement",
+						type: 'ExpressionStatement',
 						start: 0,
 						end: 6,
 						expression: {
-							type: "BinaryExpression",
+							type: 'BinaryExpression',
 							start: 0,
 							end: 5,
 							left: {
-								type: "Identifier",
+								type: 'Identifier',
 								start: 0,
 								end: 1,
-								name: "a"
+								name: 'a'
 							},
-							operator: "+",
+							operator: '+',
 							right: {
-								type: "Identifier",
+								type: 'Identifier',
 								start: 4,
 								end: 5,
-								name: "b"
+								name: 'b'
 							}
 						}
 					}
 				],
-				sourceType: "module"
+				sourceType: 'module'
 			};
 
 			await asyncWalk(ast, {
 				[phase](node) {
-					if (node.type === "Identifier" && node.name === "b") {
+					if (node.type === 'Identifier' && node.name === 'b') {
 						this.remove();
 					}
 				}
@@ -678,51 +685,51 @@ describe("async estree-walker", () => {
 		}
 	});
 
-	it("removes a node from array", async () => {
-		const phases = ["enter", "leave"];
+	it('removes a node from array', async () => {
+		const phases = ['enter', 'leave'];
 		for await (const phase of phases) {
 			const ast = {
-				type: "Program",
+				type: 'Program',
 				body: [
 					{
-						type: "VariableDeclaration",
+						type: 'VariableDeclaration',
 						declarations: [
 							{
-								type: "VariableDeclarator",
+								type: 'VariableDeclarator',
 								id: {
-									type: "Identifier",
-									name: "a"
+									type: 'Identifier',
+									name: 'a'
 								},
 								init: null
 							},
 							{
-								type: "VariableDeclarator",
+								type: 'VariableDeclarator',
 								id: {
-									type: "Identifier",
-									name: "b"
+									type: 'Identifier',
+									name: 'b'
 								},
 								init: null
 							},
 							{
-								type: "VariableDeclarator",
+								type: 'VariableDeclarator',
 								id: {
-									type: "Identifier",
-									name: "c"
+									type: 'Identifier',
+									name: 'c'
 								},
 								init: null
 							}
 						],
-						kind: "let"
+						kind: 'let'
 					}
 				],
-				sourceType: "module"
+				sourceType: 'module'
 			};
 
 			const visitedIndex = [];
 
 			await asyncWalk(ast, {
 				[phase](node, parent, key, index) {
-					if (node.type === "VariableDeclarator") {
+					if (node.type === 'VariableDeclarator') {
 						visitedIndex.push(index);
 						if (node.id.name === 'a' || node.id.name === 'b') {
 							this.remove();
@@ -733,7 +740,7 @@ describe("async estree-walker", () => {
 
 			assert.equal(ast.body[0].declarations.length, 1);
 			assert.equal(visitedIndex.length, 3);
-			assert.deepEqual(visitedIndex, [0, 0, 0]);
+			assert.equal(visitedIndex, [0, 0, 0]);
 			assert.equal(ast.body[0].declarations[0].id.name, 'c');
 		}
 	});
