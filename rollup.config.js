@@ -15,7 +15,7 @@ function emitModulePackageFile() {
 
 export default {
 	input: {
-		'estree-walker': 'src/index.ts'
+		'estree-walker': 'src/index.mjs'
 	},
 	output: [
 		{ dir: 'dist/umd', format: 'umd', name: 'estreeWalker' },

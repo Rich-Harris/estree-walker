@@ -20,7 +20,7 @@
   "scripts": {
     "prepublishOnly": "npm run build && npm test",
     "build": "tsc && rollup -c",
-    "test": "uvu test -r sucrase/register"
+    "test": "uvu test"
   },
   "devDependencies": {
     "@types/estree": "0.0.42",

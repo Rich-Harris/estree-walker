@@ -1,7 +1,7 @@
 // @ts-check
-const uvu = require('uvu');
-const assert = require('uvu/assert');
-const { walk, asyncWalk } = require('..');
+import * as uvu from 'uvu';
+import * as assert from 'uvu/assert';
+import { walk, asyncWalk } from '../src/index.js';
 
 function describe(name, fn) {
 	const suite = uvu.suite(name);
