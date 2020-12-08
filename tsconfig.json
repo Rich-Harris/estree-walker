@@ -1,28 +1,13 @@
 {
 	"compilerOptions": {
+		"allowJs": true,
 		"target": "es2017",
-		"module": "esnext",
-
-		"types": ["estree"],
-
 		"declaration": true,
-		"declarationDir": "types",
-
 		"emitDeclarationOnly": true,
-		"newLine": "lf",
-
-		"noImplicitAny": true,
-		"diagnostics": true,
-		"noImplicitThis": true,
-		"noEmitOnError": true,
-		"incremental": true,
+		"outDir": "types"
 	},
 
 	"include": [
 		"src"
-	],
-
-	"exclude": [
-		"node_modules"
 	]
 }

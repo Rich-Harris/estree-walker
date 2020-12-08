@@ -1,5 +1,3 @@
-import sucrase from 'rollup-plugin-sucrase';
-
 function emitModulePackageFile() {
 	return {
 		name: 'emit-module-package-file',
@@ -15,15 +13,10 @@ function emitModulePackageFile() {
 
 export default {
 	input: {
-		'estree-walker': 'src/index.mjs'
+		'estree-walker': 'src/index.js'
 	},
 	output: [
 		{ dir: 'dist/umd', format: 'umd', name: 'estreeWalker' },
 		{ dir: 'dist/esm', format: 'esm', plugins: [emitModulePackageFile()] }
-	],
-	plugins: [
-		sucrase({
-			transforms: ['typescript']
-		})
 	]
 };

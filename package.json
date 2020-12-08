@@ -25,7 +25,6 @@
   "devDependencies": {
     "@types/estree": "0.0.42",
     "rollup": "^2.10.9",
-    "rollup-plugin-sucrase": "^2.1.0",
     "typescript": "^3.7.5",
     "uvu": "^0.5.1"
   },
