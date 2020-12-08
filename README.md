@@ -13,17 +13,17 @@ npm i estree-walker
 ## Usage
 
 ```js
-var walk = require( 'estree-walker' ).walk;
-var acorn = require( 'acorn' );
+var walk = require('estree-walker').walk;
+var acorn = require('acorn');
 
-ast = acorn.parse( sourceCode, options ); // https://github.com/acornjs/acorn
+ast = acorn.parse(sourceCode, options); // https://github.com/acornjs/acorn
 
-walk( ast, {
-  enter: function ( node, parent, prop, index ) {
+walk(ast, {
+  enter(node, parent, prop, index) {
     // some code happens
   },
-  leave: function ( node, parent, prop, index ) {
-  	// some code happens
+  leave(node, parent, prop, index) {
+    // some code happens
   }
 });
 ```
