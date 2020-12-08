@@ -11,10 +11,10 @@
   },
   "type": "commonjs",
   "main": "./dist/umd/estree-walker.js",
-  "module": "./dist/es/estree-walker.js",
+  "module": "./dist/esm/estree-walker.js",
   "exports": {
     "require": "./dist/umd/estree-walker.js",
-    "import": "./dist/es/estree-walker.js"
+    "import": "./dist/esm/estree-walker.js"
   },
   "types": "types/index.d.ts",
   "scripts": {
