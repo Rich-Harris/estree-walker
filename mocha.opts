@@ -1,2 +1,0 @@
---require sucrase/register
-test/test.ts

@@ -1,5 +1,9 @@
 # changelog
 
+## 3.0.0
+
+* Remove CommonJS vestiges
+
 ## 2.0.2
 
 * Internal tidying up (change test runner, convert to JS)
