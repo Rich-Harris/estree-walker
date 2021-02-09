@@ -1,13 +1,13 @@
 // @ts-check
 import { WalkerBase } from './walker.js';
 
-/** @typedef { import('estree').BaseNode} BaseNode */
-/** @typedef { import('./walker').WalkerContext} WalkerContext */
+/** @typedef { import('estree').Node } Node */
+/** @typedef { import('./walker').WalkerContext } WalkerContext */
 
 /** @typedef {(
  *    this: WalkerContext,
- *    node: BaseNode,
- *    parent: BaseNode,
+ *    node: Node,
+ *    parent: Node,
  *    key: string,
  *    index: number
  * ) => Promise<void>} AsyncHandler */
@@ -30,11 +30,11 @@ export class AsyncWalker extends WalkerBase {
 
 	/**
 	 *
-	 * @param {BaseNode} node
-	 * @param {BaseNode} parent
+	 * @param {Node} node
+	 * @param {Node} parent
 	 * @param {string} [prop]
 	 * @param {number} [index]
-	 * @returns {Promise<BaseNode>}
+	 * @returns {Promise<Node>}
 	 */
 	async visit(node, parent, prop, index) {
 		if (node) {
