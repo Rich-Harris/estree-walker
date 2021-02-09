@@ -71,7 +71,7 @@ export class AsyncWalker extends WalkerBase {
 			for (const key in node) {
 				const value = node[key];
 
-				if (typeof value !== "object") {
+				if (typeof value !== 'object') {
 					continue;
 				} else if (Array.isArray(value)) {
 					for (let i = 0; i < value.length; i += 1) {
@@ -82,7 +82,7 @@ export class AsyncWalker extends WalkerBase {
 							}
 						}
 					}
-				} else if (value !== null && typeof value.type === "string") {
+				} else if (value !== null && typeof value.type === 'string') {
 					await this.visit(value, node, key, null);
 				}
 			}
