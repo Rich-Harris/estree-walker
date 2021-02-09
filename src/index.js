@@ -3,6 +3,7 @@ import { SyncWalker } from './sync.js';
 import { AsyncWalker } from './async.js';
 
 /** @typedef { import('estree').Node } Node */
+/** @typedef { import('estree').BaseNode } BaseNode */
 /** @typedef { import('./sync.js').SyncHandler } SyncHandler */
 /** @typedef { import('./async.js').AsyncHandler } AsyncHandler */
 
