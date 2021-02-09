@@ -1,10 +1,10 @@
 // @ts-check
-/** @typedef { import('estree').BaseNode} BaseNode */
+/** @typedef { import('estree').Node } Node */
 
 /** @typedef {{
 	skip: () => void;
 	remove: () => void;
-	replace: (node: BaseNode) => void;
+	replace: (node: Node) => void;
 }} WalkerContext */
 
 export class WalkerBase {
@@ -15,7 +15,7 @@ export class WalkerBase {
 		/** @type {boolean} */
 		this.should_remove = false;
 
-		/** @type {BaseNode | null} */
+		/** @type {Node | null} */
 		this.replacement = null;
 
 		/** @type {WalkerContext} */
@@ -31,7 +31,7 @@ export class WalkerBase {
 	 * @param {any} parent
 	 * @param {string} prop
 	 * @param {number} index
-	 * @param {BaseNode} node
+	 * @param {Node} node
 	 */
 	replace(parent, prop, index, node) {
 		if (parent) {

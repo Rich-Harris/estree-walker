@@ -2,18 +2,19 @@
 import { SyncWalker } from './sync.js';
 import { AsyncWalker } from './async.js';
 
-/** @typedef { import('estree').BaseNode} BaseNode */
-/** @typedef { import('./sync.js').SyncHandler} SyncHandler */
-/** @typedef { import('./async.js').AsyncHandler} AsyncHandler */
+/** @typedef { import('estree').Node } Node */
+/** @typedef { import('estree').BaseNode } BaseNode */
+/** @typedef { import('./sync.js').SyncHandler } SyncHandler */
+/** @typedef { import('./async.js').AsyncHandler } AsyncHandler */
 
 /**
  *
- * @param {BaseNode} ast
+ * @param {Node} ast
  * @param {{
  *   enter?: SyncHandler
  *   leave?: SyncHandler
  * }} walker
- * @returns {BaseNode}
+ * @returns {Node}
  */
 export function walk(ast, { enter, leave }) {
 	const instance = new SyncWalker(enter, leave);
@@ -22,12 +23,12 @@ export function walk(ast, { enter, leave }) {
 
 /**
  *
- * @param {BaseNode} ast
+ * @param {Node} ast
  * @param {{
  *   enter?: AsyncHandler
  *   leave?: AsyncHandler
  * }} walker
- * @returns {Promise<BaseNode>}
+ * @returns {Promise<Node>}
  */
 export async function asyncWalk(ast, { enter, leave }) {
 	const instance = new AsyncWalker(enter, leave);
