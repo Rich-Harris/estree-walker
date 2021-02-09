@@ -9,7 +9,7 @@ function describe(name, fn) {
 	suite.run();
 }
 
-describe('sync estree-walker', it => {
+describe('sync estree-walker', (it) => {
 	it('walks a malformed node', () => {
 		const block = [
 			{
@@ -378,7 +378,7 @@ describe('sync estree-walker', it => {
 	});
 });
 
-describe('async estree-walker', it => {
+describe('async estree-walker', (it) => {
 	it('walks a malformed node', async () => {
 		const block = [
 			{

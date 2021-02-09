@@ -1,0 +1,4 @@
+bench/*.json
+node_modules
+types
+package-lock.json
