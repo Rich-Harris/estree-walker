@@ -12,7 +12,10 @@
   "type": "module",
   "module": "./src/index.js",
   "exports": {
-    "import": "./src/index.js"
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./src/index.js"
+    }
   },
   "types": "types/index.d.ts",
   "scripts": {
