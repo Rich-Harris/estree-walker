@@ -1,5 +1,9 @@
 # changelog
 
+## 3.0.1
+
+* Add `package.json` to `exports`
+
 ## 3.0.0
 
 * Remove CommonJS vestiges
