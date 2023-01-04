@@ -1,40 +1,56 @@
-// @ts-check
 import { WalkerBase } from './walker.js';
 
-/** @typedef { import('estree').BaseNode} BaseNode */
-/** @typedef { import('./walker.js').WalkerContext} WalkerContext */
-
-/** @typedef {(
+/**
+ * @typedef { import('estree').Node} Node
+ * @typedef { import('./walker.js').WalkerContext} WalkerContext
+ * @typedef {(
  *    this: WalkerContext,
- *    node: BaseNode,
- *    parent: BaseNode,
- *    key: string,
- *    index: number
- * ) => void} SyncHandler */
+ *    node: Node,
+ *    parent: Node,
+ *    key?: string | number | symbol | undefined,
+ *    index?: number | undefined
+ * ) => void} SyncHandler
+ */
 
 export class SyncWalker extends WalkerBase {
 	/**
 	 *
-	 * @param {SyncHandler} enter
-	 * @param {SyncHandler} leave
+	 * @param {SyncHandler} [enter]
+	 * @param {SyncHandler} [leave]
 	 */
 	constructor(enter, leave) {
 		super();
 
-		/** @type {SyncHandler} */
+		/** @type {boolean} */
+		this.should_skip = false;
+
+		/** @type {boolean} */
+		this.should_remove = false;
+
+		/** @type {Node | null} */
+		this.replacement = null;
+
+		/** @type {WalkerContext} */
+		this.context = {
+			skip: () => (this.should_skip = true),
+			remove: () => (this.should_remove = true),
+			replace: (node) => (this.replacement = node)
+		};
+
+		/** @type {SyncHandler | undefined} */
 		this.enter = enter;
 
-		/** @type {SyncHandler} */
+		/** @type {SyncHandler | undefined} */
 		this.leave = leave;
 	}
 
 	/**
-	 *
-	 * @param {BaseNode} node
-	 * @param {BaseNode} parent
-	 * @param {string} [prop]
-	 * @param {number} [index]
-	 * @returns {BaseNode}
+	 * @template {Node} Parent
+	 * @param {Node} node
+	 * @param {Parent} parent
+	 * @param {keyof Parent} prop
+	 * @param {number} index
+	 * @returns {Node | null}
 	 */
 	visit(node, parent, prop, index) {
 		if (node) {
@@ -69,7 +85,7 @@ export class SyncWalker extends WalkerBase {
 			}
 
 			for (const key in node) {
-				const value = node[key];
+				const value = node[/** @type {keyof Node} */(key)];
 
 				if (typeof value !== "object") {
 					continue;

@@ -1,40 +1,56 @@
-// @ts-check
 import { WalkerBase } from './walker.js';
 
-/** @typedef { import('estree').BaseNode} BaseNode */
-/** @typedef { import('./walker').WalkerContext} WalkerContext */
-
-/** @typedef {(
+/**
+ * @typedef { import('estree').Node} Node
+ * @typedef { import('./walker.js').WalkerContext} WalkerContext
+ * @typedef {(
  *    this: WalkerContext,
- *    node: BaseNode,
- *    parent: BaseNode,
- *    key: string,
+ *    node: Node,
+ *    parent: Node,
+ *    key: string | number | symbol,
  *    index: number
- * ) => Promise<void>} AsyncHandler */
+ * ) => Promise<void>} AsyncHandler
+ */
 
 export class AsyncWalker extends WalkerBase {
 	/**
 	 *
-	 * @param {AsyncHandler} enter
-	 * @param {AsyncHandler} leave
+	 * @param {AsyncHandler} [enter]
+	 * @param {AsyncHandler} [leave]
 	 */
 	constructor(enter, leave) {
 		super();
 
-		/** @type {AsyncHandler} */
+		/** @type {boolean} */
+		this.should_skip = false;
+
+		/** @type {boolean} */
+		this.should_remove = false;
+
+		/** @type {Node | null} */
+		this.replacement = null;
+
+		/** @type {WalkerContext} */
+		this.context = {
+			skip: () => (this.should_skip = true),
+			remove: () => (this.should_remove = true),
+			replace: (node) => (this.replacement = node)
+		};
+
+		/** @type {AsyncHandler | undefined} */
 		this.enter = enter;
 
-		/** @type {AsyncHandler} */
+		/** @type {AsyncHandler | undefined} */
 		this.leave = leave;
 	}
 
 	/**
-	 *
-	 * @param {BaseNode} node
-	 * @param {BaseNode} parent
-	 * @param {string} [prop]
-	 * @param {number} [index]
-	 * @returns {Promise<BaseNode>}
+	 * @template {Node} Parent
+	 * @param {Node} node
+	 * @param {Parent} parent
+	 * @param {keyof Parent} prop
+	 * @param {number} index
+	 * @returns {Promise<Node | null>}
 	 */
 	async visit(node, parent, prop, index) {
 		if (node) {
@@ -69,7 +85,7 @@ export class AsyncWalker extends WalkerBase {
 			}
 
 			for (const key in node) {
-				const value = node[key];
+				const value = node[/** @type {keyof Node} */ (key)];
 
 				if (typeof value !== "object") {
 					continue;

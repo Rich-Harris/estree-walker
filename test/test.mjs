@@ -1,4 +1,3 @@
-// @ts-check
 import * as uvu from 'uvu';
 import * as assert from 'uvu/assert';
 import { walk, asyncWalk } from '../src/index.js';
