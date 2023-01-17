@@ -1,6 +1,5 @@
 {
 	"compilerOptions": {
-		"allowJs": true,
 		"checkJs": true,
 		"strict": true,
 		"module": "node16",
