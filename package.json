@@ -21,14 +21,13 @@
 	"types": "types/index.d.ts",
 	"scripts": {
 		"prepublishOnly": "tsc && npm test",
-		"test": "uvu test"
+		"test": "node --test"
 	},
 	"dependencies": {
 		"@types/estree": "^1.0.0"
 	},
 	"devDependencies": {
-		"typescript": "^4.9.0",
-		"uvu": "^0.5.1"
+		"typescript": "^4.9.0"
 	},
 	"files": [
 		"src",
