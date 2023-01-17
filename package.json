@@ -23,8 +23,10 @@
 		"prepublishOnly": "tsc && npm test",
 		"test": "uvu test"
 	},
+	"dependencies": {
+		"@types/estree": "^1.0.0"
+	},
 	"devDependencies": {
-		"@types/estree": "0.0.42",
 		"typescript": "^4.9.0",
 		"uvu": "^0.5.1"
 	},
