@@ -6,9 +6,9 @@ import { WalkerBase } from './walker.js';
  * @typedef {(
  *    this: WalkerContext,
  *    node: Node,
- *    parent: Node,
- *    key: string | number | symbol,
- *    index: number
+ *    parent: Node | null,
+ *    key: string | number | symbol | null | undefined,
+ *    index: number | null | undefined
  * ) => Promise<void>} AsyncHandler
  */
 
@@ -47,9 +47,9 @@ export class AsyncWalker extends WalkerBase {
 	/**
 	 * @template {Node} Parent
 	 * @param {Node} node
-	 * @param {Parent} parent
-	 * @param {keyof Parent} prop
-	 * @param {number} index
+	 * @param {Parent | null} parent
+	 * @param {keyof Parent} [prop]
+	 * @param {number | null} [index]
 	 * @returns {Promise<Node | null>}
 	 */
 	async visit(node, parent, prop, index) {
@@ -84,22 +84,28 @@ export class AsyncWalker extends WalkerBase {
 				if (removed) return null;
 			}
 
-			for (const key in node) {
-				const value = node[/** @type {keyof Node} */ (key)];
+			/** @type {keyof Node} */
+			let key;
 
-				if (typeof value !== "object") {
-					continue;
-				} else if (Array.isArray(value)) {
-					for (let i = 0; i < value.length; i += 1) {
-						if (value[i] !== null && typeof value[i].type === 'string') {
-							if (!(await this.visit(value[i], node, key, i))) {
-								// removed
-								i--;
+			for (key in node) {
+				/** @type {unknown} */
+				const value = node[key];
+
+				if (value && typeof value === 'object') {
+					if (Array.isArray(value)) {
+						const nodes = /** @type {Array<unknown>} */ (value);
+						for (let i = 0; i < nodes.length; i += 1) {
+							const item = nodes[i];
+							if (isNode(item)) {
+								if (!(await this.visit(item, node, key, i))) {
+									// removed
+									i--;
+								}
 							}
 						}
+					} else if (isNode(value)) {
+						await this.visit(value, node, key, null);
 					}
-				} else if (value !== null && typeof value.type === "string") {
-					await this.visit(value, node, key, null);
 				}
 			}
 
@@ -131,4 +137,16 @@ export class AsyncWalker extends WalkerBase {
 
 		return node;
 	}
+}
+
+/**
+ * Ducktype a node.
+ *
+ * @param {unknown} value
+ * @returns {value is Node}
+ */
+function isNode(value) {
+	return (
+		value !== null && typeof value === 'object' && 'type' in value && typeof value.type === 'string'
+	);
 }

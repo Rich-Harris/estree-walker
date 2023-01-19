@@ -28,31 +28,31 @@ export class WalkerBase {
 
 	/**
 	 * @template {Node} Parent
-	 * @param {Parent} parent
-	 * @param {keyof Parent} prop
-	 * @param {number | null} index
+	 * @param {Parent | null | undefined} parent
+	 * @param {keyof Parent | null | undefined} prop
+	 * @param {number | null | undefined} index
 	 * @param {Node} node
 	 */
 	replace(parent, prop, index, node) {
-		if (parent) {
+		if (parent && prop) {
 			if (index !== null && typeof index !== 'undefined') {
-				/** @type {Array<Node>} */(parent[prop])[index] = node;
+				/** @type {Array<Node>} */ (parent[prop])[index] = node;
 			} else {
-				/** @type {Node} */(parent[prop]) = node;
+				/** @type {Node} */ (parent[prop]) = node;
 			}
 		}
 	}
 
 	/**
 	 * @template {Node} Parent
-	 * @param {Parent} parent
-	 * @param {keyof Parent} prop
-	 * @param {number} index
+	 * @param {Parent | null | undefined} parent
+	 * @param {keyof Parent | null | undefined} prop
+	 * @param {number | null | undefined} index
 	 */
 	remove(parent, prop, index) {
-		if (parent) {
-			if (index !== null) {
-				/** @type {Array<Node>} */(parent[prop]).splice(index, 1);
+		if (parent && prop) {
+			if (index !== null && index !== undefined) {
+				/** @type {Array<Node>} */ (parent[prop]).splice(index, 1);
 			} else {
 				delete parent[prop];
 			}
