@@ -35,7 +35,7 @@ export class WalkerBase {
 	 */
 	replace(parent, prop, index, node) {
 		if (parent && prop) {
-			if (index !== null && typeof index !== 'undefined') {
+			if (index != null) {
 				/** @type {Array<Node>} */ (parent[prop])[index] = node;
 			} else {
 				/** @type {Node} */ (parent[prop]) = node;
