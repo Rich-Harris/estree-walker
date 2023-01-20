@@ -1,11 +1,11 @@
-// @ts-check
-/** @typedef { import('estree').BaseNode} BaseNode */
-
-/** @typedef {{
-	skip: () => void;
-	remove: () => void;
-	replace: (node: BaseNode) => void;
-}} WalkerContext */
+/**
+ * @typedef { import('estree').Node} Node
+ * @typedef {{
+ *   skip: () => void;
+ *   remove: () => void;
+ *   replace: (node: Node) => void;
+ * }} WalkerContext
+ */
 
 export class WalkerBase {
 	constructor() {
@@ -15,7 +15,7 @@ export class WalkerBase {
 		/** @type {boolean} */
 		this.should_remove = false;
 
-		/** @type {BaseNode | null} */
+		/** @type {Node | null} */
 		this.replacement = null;
 
 		/** @type {WalkerContext} */
@@ -27,32 +27,32 @@ export class WalkerBase {
 	}
 
 	/**
-	 *
-	 * @param {any} parent
-	 * @param {string} prop
-	 * @param {number} index
-	 * @param {BaseNode} node
+	 * @template {Node} Parent
+	 * @param {Parent | null | undefined} parent
+	 * @param {keyof Parent | null | undefined} prop
+	 * @param {number | null | undefined} index
+	 * @param {Node} node
 	 */
 	replace(parent, prop, index, node) {
-		if (parent) {
-			if (index !== null) {
-				parent[prop][index] = node;
+		if (parent && prop) {
+			if (index != null) {
+				/** @type {Array<Node>} */ (parent[prop])[index] = node;
 			} else {
-				parent[prop] = node;
+				/** @type {Node} */ (parent[prop]) = node;
 			}
 		}
 	}
 
 	/**
-	 *
-	 * @param {any} parent
-	 * @param {string} prop
-	 * @param {number} index
+	 * @template {Node} Parent
+	 * @param {Parent | null | undefined} parent
+	 * @param {keyof Parent | null | undefined} prop
+	 * @param {number | null | undefined} index
 	 */
 	remove(parent, prop, index) {
-		if (parent) {
-			if (index !== null) {
-				parent[prop].splice(index, 1);
+		if (parent && prop) {
+			if (index !== null && index !== undefined) {
+				/** @type {Array<Node>} */ (parent[prop]).splice(index, 1);
 			} else {
 				delete parent[prop];
 			}

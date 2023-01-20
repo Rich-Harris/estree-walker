@@ -1,6 +1,8 @@
 {
 	"compilerOptions": {
-		"allowJs": true,
+		"checkJs": true,
+		"strict": true,
+		"module": "node16",
 		"target": "es2017",
 		"declaration": true,
 		"emitDeclarationOnly": true,
