@@ -1,5 +1,10 @@
 # changelog
 
+## 3.0.3
+
+- Add dependencies on `@types/estree` ([#34](https://github.com/Rich-Harris/estree-walker/pull/34))
+- Internal refactoring ([#34](https://github.com/Rich-Harris/estree-walker/pull/34))
+
 ## 3.0.2
 
 - Add `types` to `exports`

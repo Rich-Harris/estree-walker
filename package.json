@@ -1,7 +1,7 @@
 {
 	"name": "estree-walker",
 	"description": "Traverse an ESTree-compliant AST",
-	"version": "3.0.2",
+	"version": "3.0.3",
 	"private": false,
 	"author": "Rich Harris",
 	"license": "MIT",
