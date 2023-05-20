@@ -1,13 +1,13 @@
 {
-	"name": "estree-walker",
-	"description": "Traverse an ESTree-compliant AST",
-	"version": "3.0.3",
+	"name": "estree-walker-plus",
+	"description": "Traverse a js or ts AST",
+	"version": "3.1.0",
 	"private": false,
-	"author": "Rich Harris",
+	"author": "Rich Harris, Joel Dibasso",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Rich-Harris/estree-walker"
+		"url": "https://github.com/dj-256/estree-walker-plus"
 	},
 	"type": "module",
 	"module": "./src/index.js",

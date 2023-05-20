@@ -147,6 +147,8 @@ export class AsyncWalker extends WalkerBase {
  */
 function isNode(value) {
 	return (
-		value !== null && typeof value === 'object' && 'type' in value && typeof value.type === 'string'
+		value !== null
+		&& typeof value === 'object'
+		&& ('type' in value && typeof value.type === 'string') || ('kind' in value && typeof value?.kind === 'number')
 	);
 }

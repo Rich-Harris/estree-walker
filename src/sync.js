@@ -103,7 +103,7 @@ export class SyncWalker extends WalkerBase {
 								}
 							}
 						}
-					} else if (isNode(value)) {
+					} else if (key !== "parent" && isNode(value)) {
 						this.visit(value, node, key, null);
 					}
 				}
@@ -147,6 +147,8 @@ export class SyncWalker extends WalkerBase {
  */
 function isNode(value) {
 	return (
-		value !== null && typeof value === 'object' && 'type' in value && typeof value.type === 'string'
+		value !== null
+		&& typeof value === 'object'
+		&& ('type' in value && typeof value.type === 'string' || 'kind' in value && typeof value.kind === 'number')
 	);
 }

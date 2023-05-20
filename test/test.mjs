@@ -1,6 +1,7 @@
 import * as uvu from 'uvu';
 import * as assert from 'uvu/assert';
 import { walk, asyncWalk } from '../src/index.js';
+import ts from 'typescript';
 
 function describe(name, fn) {
 	const suite = uvu.suite(name);
@@ -132,8 +133,10 @@ describe('sync estree-walker', it => {
 		};
 
 		walk(ast, {
-			enter() {},
-			leave() {}
+			enter() {
+			},
+			leave() {
+			}
 		});
 
 		assert.ok(true);
@@ -501,8 +504,10 @@ describe('async estree-walker', it => {
 		};
 
 		await asyncWalk(ast, {
-			enter() {},
-			leave() {}
+			enter() {
+			},
+			leave() {
+			}
 		});
 
 		assert.ok(true);
@@ -743,5 +748,37 @@ describe('async estree-walker', it => {
 			assert.equal(visitedIndex, [0, 0, 0]);
 			assert.equal(ast.body[0].declarations[0].id.name, 'c');
 		}
+	});
+});
+
+describe('typescript ast', it => {
+	it('walks a typescript ast', async () => {
+		const code = `
+		@Component()
+		export default class UserManager implements UserFinder, UserCreator {
+			constructor(
+				private readonly userRepository: UserRepository,
+				private readonly userFactory: UserFactory,
+			) {}
+
+			findUser(id: string): Promise<User> {
+				return await this.userRepository.find(id);
+			}
+
+			createUser(name: string): Promise<User> {
+				return await this.userFactory.create(name);
+			}
+		}
+		`;
+		const ast = ts.createSourceFile('test.ts', code, ts.ScriptTarget.ES2015, true);
+		let decoratorName;
+		walk(ast, {
+			enter(node) {
+				if (ts.isDecorator(node)) {
+					decoratorName = node.expression.escapedText ?? node.expression.expression.escapedText;
+				}
+			}
+		});
+		assert.equal(decoratorName, 'Component');
 	});
 });
