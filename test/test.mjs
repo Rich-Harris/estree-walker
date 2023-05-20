@@ -754,31 +754,70 @@ describe('async estree-walker', it => {
 describe('typescript ast', it => {
 	it('walks a typescript ast', async () => {
 		const code = `
-		@Component()
-		export default class UserManager implements UserFinder, UserCreator {
-			constructor(
-				private readonly userRepository: UserRepository,
-				private readonly userFactory: UserFactory,
-			) {}
+@Controller
+export class TodoController {
+    // @ts-ignore
+    constructor(private todoManager: TodoManager) {
+    }
 
-			findUser(id: string): Promise<User> {
-				return await this.userRepository.find(id);
-			}
+    // @ts-ignore
+    @Get('/todo')
+    async getTodo(): Promise<Todo> {
+        return {
+            title: '',
+            content: '',
+        }
+    }
 
-			createUser(name: string): Promise<User> {
-				return await this.userFactory.create(name);
-			}
-		}
-		`;
+    // @ts-ignore
+    @Post('/todo')
+    async addTodo(
+        // @ts-ignore
+        @Body body: string,
+    ): Promise<Todo> {
+        const todo = this.todoManager.parsePlainText(body);
+        await this.todoManager.addEvent(todo);
+        return todo;
+    }
+
+    // @ts-ignore
+    @Put('/todo')
+    async updateTodo(
+        // @ts-ignore
+        @Body body: string,
+    ): Promise<Todo> {
+        const todo = this.todoManager.parsePlainText(body);
+        await this.todoManager.updateEvent(todo);
+        return todo;
+    }
+
+    // @ts-ignore
+    @Delete('/todo')
+    async deleteTodo(
+        // @ts-ignore
+        @Body body: string,
+    ): Promise<Todo> {
+        const todo = this.todoManager.parsePlainText(body);
+        await this.todoManager.removeEvent(todo);
+        return todo;
+    }
+}`;
 		const ast = ts.createSourceFile('test.ts', code, ts.ScriptTarget.ES2015, true);
-		let decoratorName;
+		let decorators = [];
+		let classes = [];
 		walk(ast, {
 			enter(node) {
+				if (ts.isClassDeclaration(node)) {
+					classes.push(node);
+				}
 				if (ts.isDecorator(node)) {
-					decoratorName = node.expression.escapedText ?? node.expression.expression.escapedText;
+					decorators.push(node);
 				}
 			}
 		});
-		assert.equal(decoratorName, 'Component');
+		assert.equal(classes.length, 1);
+		assert.equal(decorators.length, 8);
+		assert.equal(decorators[0].expression.escapedText, 'Controller');
+		assert.equal(decorators[1].expression.expression.escapedText, 'Get')
 	});
 });

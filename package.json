@@ -1,7 +1,7 @@
 {
 	"name": "estree-walker-plus",
 	"description": "Traverse a js or ts AST",
-	"version": "3.1.0",
+	"version": "3.1.1",
 	"private": false,
 	"author": "Joel Dibasso (Forked from Rich Harris)",
 	"license": "MIT",
@@ -20,7 +20,7 @@
 	},
 	"types": "types/index.d.ts",
 	"scripts": {
-		"prepublishOnly": "tsc && npm test",
+		"prepublishOnly": "npm test",
 		"test": "uvu test"
 	},
 	"dependencies": {

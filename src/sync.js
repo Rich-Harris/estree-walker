@@ -50,9 +50,10 @@ export class SyncWalker extends WalkerBase {
 	 * @param {Parent | null} parent
 	 * @param {keyof Parent} [prop]
 	 * @param {number | null} [index]
+	 * @param {number} depth
 	 * @returns {Node | null}
 	 */
-	visit(node, parent, prop, index) {
+	visit(node, parent, prop, index, depth=0) {
 		if (node) {
 			if (this.enter) {
 				const _should_skip = this.should_skip;
@@ -91,20 +92,30 @@ export class SyncWalker extends WalkerBase {
 				/** @type {unknown} */
 				const value = node[key];
 
+				// const printName = (n) => {
+				// 	const name = n.escapedText ?? n.name?.escapedText ?? n.expression?.escapedText ?? n.expression?.expression?.escapedText;
+				// 	if (name) {
+				// 		console.log("> ".repeat(depth+1) + ts.SyntaxKind[n.kind] + ": " + name);
+				// 	}
+				// };
+
 				if (value && typeof value === 'object') {
+					// console.log("> ".repeat(depth) + key)
 					if (Array.isArray(value)) {
 						const nodes = /** @type {Array<unknown>} */ (value);
 						for (let i = 0; i < nodes.length; i += 1) {
 							const item = nodes[i];
 							if (isNode(item)) {
-								if (!this.visit(item, node, key, i)) {
+								// printName(item);
+								if (!this.visit(item, node, key, i, depth+1)) {
 									// removed
 									i--;
 								}
 							}
 						}
-					} else if (key !== "parent" && isNode(value)) {
-						this.visit(value, node, key, null);
+					} else if (key !== 'parent' && key !== 'externalModuleIndicator' && isNode(value)) {
+						// printName(value);
+						this.visit(value, node, key, null, depth+1);
 					}
 				}
 			}
