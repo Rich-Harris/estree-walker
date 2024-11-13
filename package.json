@@ -15,7 +15,8 @@
 		"./package.json": "./package.json",
 		".": {
 			"types": "./types/index.d.ts",
-			"import": "./src/index.js"
+			"import": "./src/index.js",
+			"require": "./src/index.js"
 		}
 	},
 	"types": "types/index.d.ts",
