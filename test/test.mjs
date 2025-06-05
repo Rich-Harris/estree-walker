@@ -193,6 +193,126 @@ describe('sync estree-walker', it => {
 		assert.equal(identifiers, ['a', 'b']);
 	});
 
+	it('skips node\'s children when skip() is called', () => {
+		const ast = {
+			type: 'Program',
+			start: 0,
+			end: 8,
+			body: [
+				{
+					type: 'ExpressionStatement',
+					start: 0,
+					end: 6,
+					expression: {
+						type: 'BinaryExpression',
+						start: 0,
+						end: 5,
+						left: {
+							type: 'Identifier',
+							start: 0,
+							end: 1,
+							name: 'a'
+						},
+						operator: '+',
+						right: {
+							type: 'Identifier',
+							start: 4,
+							end: 5,
+							name: 'b'
+						}
+					}
+				}
+			],
+			sourceType: 'module'
+		};
+
+		const enteredNodeTypes = [];
+		const leftNodeTypes = [];
+
+		walk(ast, {
+			enter(node) {
+				enteredNodeTypes.push(node.type);
+
+				if (node.type === 'ExpressionStatement') {
+					this.skip();
+				}
+			},
+			leave(node) {
+				leftNodeTypes.push(node.type);
+			}
+		});
+
+		assert.equal(enteredNodeTypes, [
+			'Program',
+			'ExpressionStatement',
+		]);
+
+		assert.equal(leftNodeTypes, [
+			'Program'
+		]);
+	});
+
+	it('skips node\'s children when skip({ callLeave: true }) is called but still calls leave', () => {
+		const ast = {
+			type: 'Program',
+			start: 0,
+			end: 8,
+			body: [
+				{
+					type: 'ExpressionStatement',
+					start: 0,
+					end: 6,
+					expression: {
+						type: 'BinaryExpression',
+						start: 0,
+						end: 5,
+						left: {
+							type: 'Identifier',
+							start: 0,
+							end: 1,
+							name: 'a'
+						},
+						operator: '+',
+						right: {
+							type: 'Identifier',
+							start: 4,
+							end: 5,
+							name: 'b'
+						}
+					}
+				}
+			],
+			sourceType: 'module'
+		};
+
+		const enteredNodeTypes = [];
+		const leftNodeTypes = [];
+
+		walk(ast, {
+			enter(node) {
+				enteredNodeTypes.push(node.type);
+
+				if (node.type === 'ExpressionStatement') {
+					this.skip({ callLeave: true });
+				}
+			},
+			leave(node) {
+				leftNodeTypes.push(node.type);
+			}
+		});
+
+		assert.equal(enteredNodeTypes, [
+			'Program',
+			'ExpressionStatement',
+		]);
+
+		assert.equal(leftNodeTypes, [
+			'ExpressionStatement',
+			'Program',
+		]);
+	});
+
+
 	it('replaces a node', () => {
 		const phases = ['enter', 'leave'];
 		for (const phase of phases) {
@@ -560,6 +680,125 @@ describe('async estree-walker', it => {
 		});
 
 		assert.equal(identifiers, ['a', 'b']);
+	});
+
+	it('skips node\'s children when skip() is called', async () => {
+		const ast = {
+			type: 'Program',
+			start: 0,
+			end: 8,
+			body: [
+				{
+					type: 'ExpressionStatement',
+					start: 0,
+					end: 6,
+					expression: {
+						type: 'BinaryExpression',
+						start: 0,
+						end: 5,
+						left: {
+							type: 'Identifier',
+							start: 0,
+							end: 1,
+							name: 'a'
+						},
+						operator: '+',
+						right: {
+							type: 'Identifier',
+							start: 4,
+							end: 5,
+							name: 'b'
+						}
+					}
+				}
+			],
+			sourceType: 'module'
+		};
+
+		const enteredNodeTypes = [];
+		const leftNodeTypes = [];
+
+		await asyncWalk(ast, {
+			enter(node) {
+				enteredNodeTypes.push(node.type);
+
+				if (node.type === 'ExpressionStatement') {
+					this.skip();
+				}
+			},
+			leave(node) {
+				leftNodeTypes.push(node.type);
+			}
+		});
+
+		assert.equal(enteredNodeTypes, [
+			'Program',
+			'ExpressionStatement',
+		]);
+
+		assert.equal(leftNodeTypes, [
+			'Program'
+		]);
+	});
+
+	it('skips node\'s children when skip({ callLeave: true }) is called but still calls leave', async () => {
+		const ast = {
+			type: 'Program',
+			start: 0,
+			end: 8,
+			body: [
+				{
+					type: 'ExpressionStatement',
+					start: 0,
+					end: 6,
+					expression: {
+						type: 'BinaryExpression',
+						start: 0,
+						end: 5,
+						left: {
+							type: 'Identifier',
+							start: 0,
+							end: 1,
+							name: 'a'
+						},
+						operator: '+',
+						right: {
+							type: 'Identifier',
+							start: 4,
+							end: 5,
+							name: 'b'
+						}
+					}
+				}
+			],
+			sourceType: 'module'
+		};
+
+		const enteredNodeTypes = [];
+		const leftNodeTypes = [];
+
+		await asyncWalk(ast, {
+			enter(node) {
+				enteredNodeTypes.push(node.type);
+
+				if (node.type === 'ExpressionStatement') {
+					this.skip({ callLeave: true });
+				}
+			},
+			leave(node) {
+				leftNodeTypes.push(node.type);
+			}
+		});
+
+		assert.equal(enteredNodeTypes, [
+			'Program',
+			'ExpressionStatement',
+		]);
+
+		assert.equal(leftNodeTypes, [
+			'ExpressionStatement',
+			'Program',
+		]);
 	});
 
 	it('replaces a node', async () => {

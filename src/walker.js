@@ -1,7 +1,10 @@
 /**
  * @typedef { import('estree').Node} Node
  * @typedef {{
- *   skip: () => void;
+ *   callLeave?: boolean;
+ * }} SkipOptions
+ * @typedef {{
+ *   skip: (options?: SkipOptions) => void;
  *   remove: () => void;
  *   replace: (node: Node) => void;
  * }} WalkerContext

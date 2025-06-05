@@ -3,6 +3,7 @@ import { WalkerBase } from './walker.js';
 /**
  * @typedef { import('estree').Node} Node
  * @typedef { import('./walker.js').WalkerContext} WalkerContext
+ * @typedef { import('./walker.js').SkipOptions} SkipOptions
  * @typedef {(
  *    this: WalkerContext,
  *    node: Node,
@@ -21,8 +22,8 @@ export class AsyncWalker extends WalkerBase {
 	constructor(enter, leave) {
 		super();
 
-		/** @type {boolean} */
-		this.should_skip = false;
+		/** @type {'no' | 'with-leave' | 'without-leave'} */
+		this.should_skip = 'no';
 
 		/** @type {boolean} */
 		this.should_remove = false;
@@ -32,7 +33,10 @@ export class AsyncWalker extends WalkerBase {
 
 		/** @type {WalkerContext} */
 		this.context = {
-			skip: () => (this.should_skip = true),
+			/** @param {SkipOptions} options */
+			skip: (options = {}) => {
+				this.should_skip = options.callLeave ? 'with-leave' : 'without-leave';
+			},
 			remove: () => (this.should_remove = true),
 			replace: (node) => (this.replacement = node)
 		};
@@ -54,11 +58,13 @@ export class AsyncWalker extends WalkerBase {
 	 */
 	async visit(node, parent, prop, index) {
 		if (node) {
+			let skipStrategy = this.should_skip;
+
 			if (this.enter) {
 				const _should_skip = this.should_skip;
 				const _should_remove = this.should_remove;
 				const _replacement = this.replacement;
-				this.should_skip = false;
+				this.should_skip = 'no';
 				this.should_remove = false;
 				this.replacement = null;
 
@@ -73,38 +79,40 @@ export class AsyncWalker extends WalkerBase {
 					this.remove(parent, prop, index);
 				}
 
-				const skipped = this.should_skip;
+				skipStrategy = this.should_skip;
 				const removed = this.should_remove;
 
 				this.should_skip = _should_skip;
 				this.should_remove = _should_remove;
 				this.replacement = _replacement;
 
-				if (skipped) return node;
+				if (skipStrategy === 'without-leave') return node;
 				if (removed) return null;
 			}
 
-			/** @type {keyof Node} */
-			let key;
+			if (skipStrategy === 'no') {
+				/** @type {keyof Node} */
+				let key;
 
-			for (key in node) {
-				/** @type {unknown} */
-				const value = node[key];
+				for (key in node) {
+					/** @type {unknown} */
+					const value = node[key];
 
-				if (value && typeof value === 'object') {
-					if (Array.isArray(value)) {
-						const nodes = /** @type {Array<unknown>} */ (value);
-						for (let i = 0; i < nodes.length; i += 1) {
-							const item = nodes[i];
-							if (isNode(item)) {
-								if (!(await this.visit(item, node, key, i))) {
-									// removed
-									i--;
+					if (value && typeof value === 'object') {
+						if (Array.isArray(value)) {
+							const nodes = /** @type {Array<unknown>} */ (value);
+							for (let i = 0; i < nodes.length; i += 1) {
+								const item = nodes[i];
+								if (isNode(item)) {
+									if (!(await this.visit(item, node, key, i))) {
+										// removed
+										i--;
+									}
 								}
 							}
+						} else if (isNode(value)) {
+							await this.visit(value, node, key, null);
 						}
-					} else if (isNode(value)) {
-						await this.visit(value, node, key, null);
 					}
 				}
 			}
