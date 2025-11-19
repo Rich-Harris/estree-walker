@@ -1,14 +1,9 @@
-import * as uvu from 'uvu';
-import * as assert from 'uvu/assert';
+import { describe, it } from 'node:test';
+import * as assert from 'node:assert/strict';
 import { walk, asyncWalk } from '../src/index.js';
 
-function describe(name, fn) {
-	const suite = uvu.suite(name);
-	fn(suite);
-	suite.run();
-}
 
-describe('sync estree-walker', it => {
+describe('sync estree-walker', () => {
 	it('walks a malformed node', () => {
 		const block = [
 			{
@@ -74,7 +69,7 @@ describe('sync estree-walker', it => {
 			}
 		});
 
-		assert.equal(entered, [
+		assert.deepEqual(entered, [
 			ast,
 			ast.body[0],
 			ast.body[0].declarations[0],
@@ -85,7 +80,7 @@ describe('sync estree-walker', it => {
 			ast.body[0].declarations[1].init
 		]);
 
-		assert.equal(left, [
+		assert.deepEqual(left, [
 			ast.body[0].declarations[0].id,
 			ast.body[0].declarations[0].init,
 			ast.body[0].declarations[0],
@@ -190,7 +185,7 @@ describe('sync estree-walker', it => {
 			}
 		});
 
-		assert.equal(identifiers, ['a', 'b']);
+		assert.deepEqual(identifiers, ['a', 'b']);
 	});
 
 	it('replaces a node', () => {
@@ -371,13 +366,13 @@ describe('sync estree-walker', it => {
 
 			assert.equal(ast.body[0].declarations.length, 1);
 			assert.equal(visitedIndex.length, 3);
-			assert.equal(visitedIndex, [0, 0, 0]);
+			assert.deepEqual(visitedIndex, [0, 0, 0]);
 			assert.equal(ast.body[0].declarations[0].id.name, 'c');
 		}
 	});
 });
 
-describe('async estree-walker', it => {
+describe('async estree-walker', () => {
 	it('walks a malformed node', async () => {
 		const block = [
 			{
@@ -404,7 +399,7 @@ describe('async estree-walker', it => {
 			}
 		);
 
-		assert.equal(answer, block[1].answer);
+		assert.deepEqual(answer, block[1].answer);
 	});
 
 	it('walks an AST', async () => {
@@ -443,7 +438,7 @@ describe('async estree-walker', it => {
 			}
 		});
 
-		assert.equal(entered, [
+		assert.deepEqual(entered, [
 			ast,
 			ast.body[0],
 			ast.body[0].declarations[0],
@@ -454,7 +449,7 @@ describe('async estree-walker', it => {
 			ast.body[0].declarations[1].init
 		]);
 
-		assert.equal(left, [
+		assert.deepEqual(left, [
 			ast.body[0].declarations[0].id,
 			ast.body[0].declarations[0].init,
 			ast.body[0].declarations[0],
@@ -559,7 +554,7 @@ describe('async estree-walker', it => {
 			}
 		});
 
-		assert.equal(identifiers, ['a', 'b']);
+		assert.deepEqual(identifiers, ['a', 'b']);
 	});
 
 	it('replaces a node', async () => {
@@ -740,7 +735,7 @@ describe('async estree-walker', it => {
 
 			assert.equal(ast.body[0].declarations.length, 1);
 			assert.equal(visitedIndex.length, 3);
-			assert.equal(visitedIndex, [0, 0, 0]);
+			assert.deepEqual(visitedIndex, [0, 0, 0]);
 			assert.equal(ast.body[0].declarations[0].id.name, 'c');
 		}
 	});
